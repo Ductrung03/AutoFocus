@@ -1,0 +1,99 @@
+{
+  "format": 1,
+  "restore": {
+    "/run/media/luckyboiz/01DB833D06AA7640/DucTrung/LK/Project/C#/WinForm/AutoFocus/AutoFocus/AutoFocus.csproj": {}
+  },
+  "projects": {
+    "/run/media/luckyboiz/01DB833D06AA7640/DucTrung/LK/Project/C#/WinForm/AutoFocus/AutoFocus/AutoFocus.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/run/media/luckyboiz/01DB833D06AA7640/DucTrung/LK/Project/C#/WinForm/AutoFocus/AutoFocus/AutoFocus.csproj",
+        "projectName": "AutoFocus",
+        "projectPath": "/run/media/luckyboiz/01DB833D06AA7640/DucTrung/LK/Project/C#/WinForm/AutoFocus/AutoFocus/AutoFocus.csproj",
+        "packagesPath": "/home/luckyboiz/.nuget/packages/",
+        "outputPath": "/run/media/luckyboiz/01DB833D06AA7640/DucTrung/LK/Project/C#/WinForm/AutoFocus/AutoFocus/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/luckyboiz/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0-windows"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0-windows7.0": {
+            "targetAlias": "net8.0-windows",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net8.0-windows7.0": {
+          "targetAlias": "net8.0-windows",
+          "dependencies": {
+            "FastReport.DataVisualization": {
+              "target": "Package",
+              "version": "[2025.2.11, )"
+            },
+            "OpenCvSharp4": {
+              "target": "Package",
+              "version": "[4.11.0.20250507, )"
+            },
+            "OpenCvSharp4.Extensions": {
+              "target": "Package",
+              "version": "[4.11.0.20250507, )"
+            },
+            "OpenCvSharp4.runtime.win": {
+              "target": "Package",
+              "version": "[4.11.0.20250507, )"
+            },
+            "WinForms.DataVisualization": {
+              "target": "Package",
+              "version": "[1.10.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[8.0.20, 8.0.20]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.110/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

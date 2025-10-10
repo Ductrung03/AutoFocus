@@ -1,0 +1,292 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\form\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\form\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\form\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\form\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\form\\mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\form\\mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\core\\imageprocessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\core\\imageprocessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\config\\configurationmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\config\\configurationmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\utilities\\roiselector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\utilities\\roiselector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\models\\benchmarkresults.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\models\\benchmarkresults.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\models\\analysisresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\models\\analysisresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\models\\rect.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\models\\rect.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\models\\imagedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\models\\imagedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\enums\\focusmeasuretype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\enums\\focusmeasuretype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\enums\\searchstrategytype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\enums\\searchstrategytype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\enums\\roimode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\enums\\roimode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\benchmark\\benchmarkrunner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\benchmark\\benchmarkrunner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|d:\\ductrung\\lk\\project\\c#\\winform\\autofocus\\autofocus\\autofocus.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{82C4C7FF-D8C6-4465-8E79-9E1DFE330EBF}|AutoFocus\\AutoFocus.csproj|solutionrelative:autofocus\\autofocus.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainForm.cs [Design]",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Form\\MainForm.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Form\\MainForm.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Form\\MainForm.cs [Design]",
+              "RelativeToolTip": "AutoFocus\\Form\\MainForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T08:50:38.507Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Program.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Program.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Program.cs",
+              "RelativeToolTip": "AutoFocus\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T06:11:37.585Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainForm.cs",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Form\\MainForm.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Form\\MainForm.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Form\\MainForm.cs",
+              "RelativeToolTip": "AutoFocus\\Form\\MainForm.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUBAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T00:11:07.145Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ROISelector.cs",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Utilities\\ROISelector.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Utilities\\ROISelector.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Utilities\\ROISelector.cs",
+              "RelativeToolTip": "AutoFocus\\Utilities\\ROISelector.cs",
+              "ViewState": "AgIAADYAAAAAAAAAAAAYwBoAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T00:17:43.165Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ConfigurationManager.cs",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Config\\ConfigurationManager.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Config\\ConfigurationManager.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Config\\ConfigurationManager.cs",
+              "RelativeToolTip": "AutoFocus\\Config\\ConfigurationManager.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAAAuwAwAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T01:55:29.095Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ImageProcessor.cs",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Core\\ImageProcessor.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Core\\ImageProcessor.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Core\\ImageProcessor.cs",
+              "RelativeToolTip": "AutoFocus\\Core\\ImageProcessor.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAnwB4AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T00:21:26.493Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainForm.Designer.cs",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Form\\MainForm.Designer.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Form\\MainForm.Designer.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Form\\MainForm.Designer.cs",
+              "RelativeToolTip": "AutoFocus\\Form\\MainForm.Designer.cs",
+              "ViewState": "AgIAAAwEAAAAAAAAAAArwCMEAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T00:19:05.958Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "BenchmarkResults.cs",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Models\\BenchmarkResults.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Models\\BenchmarkResults.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Models\\BenchmarkResults.cs",
+              "RelativeToolTip": "AutoFocus\\Models\\BenchmarkResults.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T00:14:54.936Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AnalysisResult.cs",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Models\\AnalysisResult.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Models\\AnalysisResult.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Models\\AnalysisResult.cs",
+              "RelativeToolTip": "AutoFocus\\Models\\AnalysisResult.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAxwA8AAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T00:14:40.217Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Rect.cs",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Models\\Rect.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Models\\Rect.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Models\\Rect.cs",
+              "RelativeToolTip": "AutoFocus\\Models\\Rect.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T00:15:08.251Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ImageData.cs",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Models\\ImageData.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Models\\ImageData.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Models\\ImageData.cs",
+              "RelativeToolTip": "AutoFocus\\Models\\ImageData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T01:55:43.422Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "FocusMeasureType.cs",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Enums\\FocusMeasureType.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Enums\\FocusMeasureType.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Enums\\FocusMeasureType.cs",
+              "RelativeToolTip": "AutoFocus\\Enums\\FocusMeasureType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T01:55:35.02Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "SearchStrategyType.cs",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Enums\\SearchStrategyType.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Enums\\SearchStrategyType.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Enums\\SearchStrategyType.cs",
+              "RelativeToolTip": "AutoFocus\\Enums\\SearchStrategyType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T01:55:37.723Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ROIMode.cs",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Enums\\ROIMode.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Enums\\ROIMode.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Enums\\ROIMode.cs",
+              "RelativeToolTip": "AutoFocus\\Enums\\ROIMode.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T01:55:36.468Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "BenchmarkRunner.cs",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Benchmark\\BenchmarkRunner.cs",
+              "RelativeDocumentMoniker": "AutoFocus\\Benchmark\\BenchmarkRunner.cs",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\Benchmark\\BenchmarkRunner.cs",
+              "RelativeToolTip": "AutoFocus\\Benchmark\\BenchmarkRunner.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAYwCsAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T01:48:01.458Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "AutoFocus.csproj",
+              "DocumentMoniker": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\AutoFocus.csproj",
+              "RelativeDocumentMoniker": "AutoFocus\\AutoFocus.csproj",
+              "ToolTip": "D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\AutoFocus.csproj",
+              "RelativeToolTip": "AutoFocus\\AutoFocus.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-09-23T00:10:35.827Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
