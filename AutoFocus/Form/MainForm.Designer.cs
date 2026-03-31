@@ -101,6 +101,9 @@ namespace AutoFocus
         {
             mainTableLayout = new TableLayoutPanel();
             leftPanel = new Panel();
+            btnROICropper = new Button();
+            btnConvert = new Button();
+            btnScaleHistogram = new Button();
             grpFileInput = new GroupBox();
             txtFolderPath = new TextBox();
             btnBrowse = new Button();
@@ -223,8 +226,8 @@ namespace AutoFocus
             // 
             mainTableLayout.ColumnCount = 3;
             mainTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 350F));
-            mainTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
-            mainTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            mainTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45F));
+            mainTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55F));
             mainTableLayout.Controls.Add(leftPanel, 0, 0);
             mainTableLayout.Controls.Add(centerPanel, 1, 0);
             mainTableLayout.Controls.Add(rightPanel, 2, 0);
@@ -235,12 +238,15 @@ namespace AutoFocus
             mainTableLayout.RowCount = 2;
             mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 25F));
-            mainTableLayout.Size = new Size(1627, 853);
+            mainTableLayout.Size = new Size(1627, 903);
             mainTableLayout.TabIndex = 0;
             // 
             // leftPanel
             // 
             leftPanel.AutoScroll = true;
+            leftPanel.Controls.Add(btnROICropper);
+            leftPanel.Controls.Add(btnConvert);
+            leftPanel.Controls.Add(btnScaleHistogram);
             leftPanel.Controls.Add(grpFileInput);
             leftPanel.Controls.Add(grpFocusMeasure);
             leftPanel.Controls.Add(grpSearchStrategy);
@@ -251,11 +257,46 @@ namespace AutoFocus
             leftPanel.Location = new Point(3, 3);
             leftPanel.Name = "leftPanel";
             leftPanel.Padding = new Padding(5);
-            leftPanel.Size = new Size(344, 822);
+            leftPanel.Size = new Size(344, 872);
             leftPanel.TabIndex = 0;
+            // 
+            // btnROICropper
+            // 
+            btnROICropper.BackColor = Color.LightBlue;
+            btnROICropper.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnROICropper.Location = new Point(170, 670);
+            btnROICropper.Name = "btnROICropper";
+            btnROICropper.Size = new Size(150, 35);
+            btnROICropper.TabIndex = 7;
+            btnROICropper.Text = "Cắt ROI Ảnh";
+            btnROICropper.UseVisualStyleBackColor = false;
+            btnROICropper.Click += BtnROICropper_Click;
+            // 
+            // btnConvert
+            // 
+            btnConvert.Location = new Point(8, 670);
+            btnConvert.Name = "btnConvert";
+            btnConvert.Size = new Size(150, 35);
+            btnConvert.TabIndex = 6;
+            btnConvert.Text = "Convert 16→8 bit";
+            btnConvert.UseVisualStyleBackColor = true;
+            btnConvert.Click += btnConvert_Click;
+            // 
+            // btnScaleHistogram
+            // 
+            btnScaleHistogram.BackColor = Color.LightGreen;
+            btnScaleHistogram.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnScaleHistogram.Location = new Point(20, 820);
+            btnScaleHistogram.Name = "btnScaleHistogram";
+            btnScaleHistogram.Size = new Size(150, 35);
+            btnScaleHistogram.TabIndex = 8;
+            btnScaleHistogram.Text = "Scale Histogram 16bit";
+            btnScaleHistogram.UseVisualStyleBackColor = false;
+            btnScaleHistogram.Click += btnScaleHistogram_Click;
             // 
             // grpFileInput
             // 
+            grpFileInput.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpFileInput.Controls.Add(txtFolderPath);
             grpFileInput.Controls.Add(btnBrowse);
             grpFileInput.Controls.Add(lblImageCount);
@@ -269,6 +310,7 @@ namespace AutoFocus
             // 
             // txtFolderPath
             // 
+            txtFolderPath.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtFolderPath.Location = new Point(10, 25);
             txtFolderPath.Name = "txtFolderPath";
             txtFolderPath.ReadOnly = true;
@@ -277,6 +319,7 @@ namespace AutoFocus
             // 
             // btnBrowse
             // 
+            btnBrowse.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnBrowse.Location = new Point(245, 24);
             btnBrowse.Name = "btnBrowse";
             btnBrowse.Size = new Size(75, 25);
@@ -294,6 +337,7 @@ namespace AutoFocus
             // 
             // lstImageFiles
             // 
+            lstImageFiles.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lstImageFiles.Location = new Point(10, 75);
             lstImageFiles.Name = "lstImageFiles";
             lstImageFiles.ScrollAlwaysVisible = true;
@@ -302,6 +346,7 @@ namespace AutoFocus
             // 
             // grpFocusMeasure
             // 
+            grpFocusMeasure.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpFocusMeasure.Controls.Add(rdoTenengrad);
             grpFocusMeasure.Controls.Add(rdoVarianceLaplacian);
             grpFocusMeasure.Controls.Add(rdoBrenner);
@@ -377,6 +422,7 @@ namespace AutoFocus
             // 
             // grpSearchStrategy
             // 
+            grpSearchStrategy.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpSearchStrategy.Controls.Add(rdoSequential);
             grpSearchStrategy.Controls.Add(rdoBinarySearch);
             grpSearchStrategy.Controls.Add(rdoHillClimbing);
@@ -433,6 +479,7 @@ namespace AutoFocus
             // 
             // grpROI
             // 
+            grpROI.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpROI.Controls.Add(rdoFullImage);
             grpROI.Controls.Add(rdoCenter75);
             grpROI.Controls.Add(rdoCenter50);
@@ -474,7 +521,7 @@ namespace AutoFocus
             // 
             // rdoCenter50
             // 
-            rdoCenter50.Location = new Point(120, 60);
+            rdoCenter50.Location = new Point(10, 45);
             rdoCenter50.Name = "rdoCenter50";
             rdoCenter50.Size = new Size(104, 24);
             rdoCenter50.TabIndex = 2;
@@ -490,7 +537,7 @@ namespace AutoFocus
             // 
             // rdoCustomROI
             // 
-            rdoCustomROI.Location = new Point(7, 89);
+            rdoCustomROI.Location = new Point(10, 70);
             rdoCustomROI.Name = "rdoCustomROI";
             rdoCustomROI.Size = new Size(104, 24);
             rdoCustomROI.TabIndex = 4;
@@ -498,7 +545,7 @@ namespace AutoFocus
             // 
             // lblX
             // 
-            lblX.Location = new Point(81, 121);
+            lblX.Location = new Point(10, 100);
             lblX.Name = "lblX";
             lblX.Size = new Size(20, 20);
             lblX.TabIndex = 5;
@@ -508,15 +555,15 @@ namespace AutoFocus
             // 
             nudROI_X.DecimalPlaces = 2;
             nudROI_X.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            nudROI_X.Location = new Point(101, 119);
+            nudROI_X.Location = new Point(35, 98);
             nudROI_X.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
             nudROI_X.Name = "nudROI_X";
-            nudROI_X.Size = new Size(45, 27);
+            nudROI_X.Size = new Size(60, 27);
             nudROI_X.TabIndex = 6;
             // 
             // lblY
             // 
-            lblY.Location = new Point(151, 121);
+            lblY.Location = new Point(100, 100);
             lblY.Name = "lblY";
             lblY.Size = new Size(20, 20);
             lblY.TabIndex = 7;
@@ -526,15 +573,15 @@ namespace AutoFocus
             // 
             nudROI_Y.DecimalPlaces = 2;
             nudROI_Y.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            nudROI_Y.Location = new Point(171, 119);
+            nudROI_Y.Location = new Point(125, 98);
             nudROI_Y.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
             nudROI_Y.Name = "nudROI_Y";
-            nudROI_Y.Size = new Size(45, 27);
+            nudROI_Y.Size = new Size(60, 27);
             nudROI_Y.TabIndex = 8;
             // 
             // lblW
             // 
-            lblW.Location = new Point(81, 144);
+            lblW.Location = new Point(10, 130);
             lblW.Name = "lblW";
             lblW.Size = new Size(20, 20);
             lblW.TabIndex = 9;
@@ -544,16 +591,16 @@ namespace AutoFocus
             // 
             nudROI_Width.DecimalPlaces = 2;
             nudROI_Width.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            nudROI_Width.Location = new Point(101, 142);
+            nudROI_Width.Location = new Point(35, 128);
             nudROI_Width.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
             nudROI_Width.Name = "nudROI_Width";
-            nudROI_Width.Size = new Size(45, 27);
+            nudROI_Width.Size = new Size(60, 27);
             nudROI_Width.TabIndex = 10;
             nudROI_Width.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // lblH
             // 
-            lblH.Location = new Point(151, 144);
+            lblH.Location = new Point(100, 130);
             lblH.Name = "lblH";
             lblH.Size = new Size(20, 20);
             lblH.TabIndex = 11;
@@ -563,23 +610,24 @@ namespace AutoFocus
             // 
             nudROI_Height.DecimalPlaces = 2;
             nudROI_Height.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            nudROI_Height.Location = new Point(171, 142);
+            nudROI_Height.Location = new Point(125, 128);
             nudROI_Height.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
             nudROI_Height.Name = "nudROI_Height";
-            nudROI_Height.Size = new Size(45, 27);
+            nudROI_Height.Size = new Size(60, 27);
             nudROI_Height.TabIndex = 12;
             nudROI_Height.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // btnAutoSuggestROI
             // 
-            btnAutoSuggestROI.Location = new Point(221, 142);
+            btnAutoSuggestROI.Location = new Point(10, 165);
             btnAutoSuggestROI.Name = "btnAutoSuggestROI";
-            btnAutoSuggestROI.Size = new Size(100, 23);
+            btnAutoSuggestROI.Size = new Size(175, 28);
             btnAutoSuggestROI.TabIndex = 13;
             btnAutoSuggestROI.Text = "Auto Suggest";
             // 
             // grpProcessingOptions
             // 
+            grpProcessingOptions.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpProcessingOptions.Controls.Add(chkParallelProcessing);
             grpProcessingOptions.Controls.Add(chkEnableSIMD);
             grpProcessingOptions.Controls.Add(lblKernelSize);
@@ -638,10 +686,10 @@ namespace AutoFocus
             chkSaveIntermediateResults.Size = new Size(104, 24);
             chkSaveIntermediateResults.TabIndex = 4;
             chkSaveIntermediateResults.Text = "Save Intermediate";
-
             // 
             // grpActions
             // 
+            grpActions.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpActions.Controls.Add(btnAnalyze);
             grpActions.Controls.Add(btnBenchmark);
             grpActions.Controls.Add(btnCompareAlgorithms);
@@ -662,10 +710,11 @@ namespace AutoFocus
             btnAnalyze.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnAnalyze.Location = new Point(10, 20);
             btnAnalyze.Name = "btnAnalyze";
-            btnAnalyze.Size = new Size(150, 35);
+            btnAnalyze.Size = new Size(150, 34);
             btnAnalyze.TabIndex = 0;
             btnAnalyze.Text = "START ANALYSIS";
             btnAnalyze.UseVisualStyleBackColor = false;
+            btnAnalyze.Click += btnAnalyze_Click_1;
             // 
             // btnBenchmark
             // 
@@ -685,14 +734,18 @@ namespace AutoFocus
             btnCompareAlgorithms.Size = new Size(100, 25);
             btnCompareAlgorithms.TabIndex = 2;
             btnCompareAlgorithms.Text = "So sánh tất cả";
-            // Thêm sau btnCompareAlgorithms (dòng ~340)
-            this.btnMatrixComparison.Location = new System.Drawing.Point(10, 90);
-            this.btnMatrixComparison.Size = new System.Drawing.Size(310, 25);
-            this.btnMatrixComparison.Text = "SO SÁNH MA TRẬN (Tất cả Thuật toán × Chiến lược)";
-            this.btnMatrixComparison.BackColor = System.Drawing.Color.Yellow;
-            this.btnMatrixComparison.Font = new System.Drawing.Font(this.btnMatrixComparison.Font, System.Drawing.FontStyle.Bold);
-
-      
+            // 
+            // btnMatrixComparison
+            // 
+            btnMatrixComparison.BackColor = Color.Yellow;
+            btnMatrixComparison.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnMatrixComparison.Location = new Point(10, 90);
+            btnMatrixComparison.Name = "btnMatrixComparison";
+            btnMatrixComparison.Size = new Size(310, 25);
+            btnMatrixComparison.TabIndex = 3;
+            btnMatrixComparison.Text = "SO SÁNH MA TRẬN (Tất cả Thuật toán × Chiến lược)";
+            btnMatrixComparison.UseVisualStyleBackColor = false;
+            // 
             // btnExportCSV
             // 
             btnExportCSV.Location = new Point(115, 60);
@@ -723,7 +776,7 @@ namespace AutoFocus
             centerPanel.Dock = DockStyle.Fill;
             centerPanel.Location = new Point(353, 3);
             centerPanel.Name = "centerPanel";
-            centerPanel.Size = new Size(760, 822);
+            centerPanel.Size = new Size(568, 872);
             centerPanel.TabIndex = 1;
             // 
             // grpImageDisplay
@@ -732,7 +785,7 @@ namespace AutoFocus
             grpImageDisplay.Dock = DockStyle.Fill;
             grpImageDisplay.Location = new Point(0, 0);
             grpImageDisplay.Name = "grpImageDisplay";
-            grpImageDisplay.Size = new Size(760, 822);
+            grpImageDisplay.Size = new Size(568, 872);
             grpImageDisplay.TabIndex = 0;
             grpImageDisplay.TabStop = false;
             grpImageDisplay.Text = "Image Display";
@@ -751,8 +804,8 @@ namespace AutoFocus
             // imageSplitContainer.Panel2
             // 
             imageSplitContainer.Panel2.Controls.Add(bottomImagePanel);
-            imageSplitContainer.Size = new Size(754, 796);
-            imageSplitContainer.SplitterDistance = 565;
+            imageSplitContainer.Size = new Size(562, 846);
+            imageSplitContainer.SplitterDistance = 600;
             imageSplitContainer.TabIndex = 0;
             // 
             // topImagePanel
@@ -762,7 +815,7 @@ namespace AutoFocus
             topImagePanel.Dock = DockStyle.Fill;
             topImagePanel.Location = new Point(0, 0);
             topImagePanel.Name = "topImagePanel";
-            topImagePanel.Size = new Size(754, 565);
+            topImagePanel.Size = new Size(562, 600);
             topImagePanel.TabIndex = 0;
             // 
             // picCurrentImage
@@ -772,7 +825,7 @@ namespace AutoFocus
             picCurrentImage.Dock = DockStyle.Fill;
             picCurrentImage.Location = new Point(0, 20);
             picCurrentImage.Name = "picCurrentImage";
-            picCurrentImage.Size = new Size(754, 545);
+            picCurrentImage.Size = new Size(562, 580);
             picCurrentImage.SizeMode = PictureBoxSizeMode.Zoom;
             picCurrentImage.TabIndex = 0;
             picCurrentImage.TabStop = false;
@@ -782,7 +835,7 @@ namespace AutoFocus
             lblCurrentImageInfo.Dock = DockStyle.Top;
             lblCurrentImageInfo.Location = new Point(0, 0);
             lblCurrentImageInfo.Name = "lblCurrentImageInfo";
-            lblCurrentImageInfo.Size = new Size(754, 20);
+            lblCurrentImageInfo.Size = new Size(562, 20);
             lblCurrentImageInfo.TabIndex = 1;
             lblCurrentImageInfo.Text = "Current Image: None";
             // 
@@ -793,7 +846,7 @@ namespace AutoFocus
             bottomImagePanel.Dock = DockStyle.Fill;
             bottomImagePanel.Location = new Point(0, 0);
             bottomImagePanel.Name = "bottomImagePanel";
-            bottomImagePanel.Size = new Size(754, 227);
+            bottomImagePanel.Size = new Size(562, 242);
             bottomImagePanel.TabIndex = 0;
             // 
             // picBestFocusImage
@@ -803,7 +856,7 @@ namespace AutoFocus
             picBestFocusImage.Dock = DockStyle.Fill;
             picBestFocusImage.Location = new Point(0, 20);
             picBestFocusImage.Name = "picBestFocusImage";
-            picBestFocusImage.Size = new Size(754, 207);
+            picBestFocusImage.Size = new Size(562, 222);
             picBestFocusImage.SizeMode = PictureBoxSizeMode.Zoom;
             picBestFocusImage.TabIndex = 0;
             picBestFocusImage.TabStop = false;
@@ -813,7 +866,7 @@ namespace AutoFocus
             lblBestFocusInfo.Dock = DockStyle.Top;
             lblBestFocusInfo.Location = new Point(0, 0);
             lblBestFocusInfo.Name = "lblBestFocusInfo";
-            lblBestFocusInfo.Size = new Size(754, 20);
+            lblBestFocusInfo.Size = new Size(562, 20);
             lblBestFocusInfo.TabIndex = 1;
             lblBestFocusInfo.Text = "Best Focus Image: None";
             // 
@@ -821,9 +874,9 @@ namespace AutoFocus
             // 
             rightPanel.Controls.Add(rightSplitContainer);
             rightPanel.Dock = DockStyle.Fill;
-            rightPanel.Location = new Point(1119, 3);
+            rightPanel.Location = new Point(927, 3);
             rightPanel.Name = "rightPanel";
-            rightPanel.Size = new Size(505, 822);
+            rightPanel.Size = new Size(697, 872);
             rightPanel.TabIndex = 2;
             // 
             // rightSplitContainer
@@ -840,8 +893,8 @@ namespace AutoFocus
             // rightSplitContainer.Panel2
             // 
             rightSplitContainer.Panel2.Controls.Add(grpResults);
-            rightSplitContainer.Size = new Size(505, 822);
-            rightSplitContainer.SplitterDistance = 583;
+            rightSplitContainer.Size = new Size(697, 872);
+            rightSplitContainer.SplitterDistance = 618;
             rightSplitContainer.TabIndex = 0;
             // 
             // tabCharts
@@ -853,7 +906,7 @@ namespace AutoFocus
             tabCharts.Location = new Point(0, 0);
             tabCharts.Name = "tabCharts";
             tabCharts.SelectedIndex = 0;
-            tabCharts.Size = new Size(505, 583);
+            tabCharts.Size = new Size(697, 618);
             tabCharts.TabIndex = 0;
             // 
             // tabFocusScores
@@ -861,7 +914,7 @@ namespace AutoFocus
             tabFocusScores.Controls.Add(chartFocusScores);
             tabFocusScores.Location = new Point(4, 29);
             tabFocusScores.Name = "tabFocusScores";
-            tabFocusScores.Size = new Size(497, 550);
+            tabFocusScores.Size = new Size(689, 585);
             tabFocusScores.TabIndex = 0;
             tabFocusScores.Text = "Độ nét";
             // 
@@ -870,7 +923,7 @@ namespace AutoFocus
             chartFocusScores.Dock = DockStyle.Fill;
             chartFocusScores.Location = new Point(0, 0);
             chartFocusScores.Name = "chartFocusScores";
-            chartFocusScores.Size = new Size(497, 550);
+            chartFocusScores.Size = new Size(689, 585);
             chartFocusScores.TabIndex = 0;
             // 
             // tabHistogram
@@ -878,7 +931,7 @@ namespace AutoFocus
             tabHistogram.Controls.Add(chartHistogram);
             tabHistogram.Location = new Point(4, 29);
             tabHistogram.Name = "tabHistogram";
-            tabHistogram.Size = new Size(479, 550);
+            tabHistogram.Size = new Size(497, 550);
             tabHistogram.TabIndex = 1;
             tabHistogram.Text = "16-bit Histogram";
             // 
@@ -887,7 +940,7 @@ namespace AutoFocus
             chartHistogram.Dock = DockStyle.Fill;
             chartHistogram.Location = new Point(0, 0);
             chartHistogram.Name = "chartHistogram";
-            chartHistogram.Size = new Size(479, 550);
+            chartHistogram.Size = new Size(497, 550);
             chartHistogram.TabIndex = 0;
             // 
             // tabComparison
@@ -895,7 +948,7 @@ namespace AutoFocus
             tabComparison.Controls.Add(chartComparison);
             tabComparison.Location = new Point(4, 29);
             tabComparison.Name = "tabComparison";
-            tabComparison.Size = new Size(479, 550);
+            tabComparison.Size = new Size(497, 550);
             tabComparison.TabIndex = 2;
             tabComparison.Text = "So sánh thuật toán";
             // 
@@ -904,7 +957,7 @@ namespace AutoFocus
             chartComparison.Dock = DockStyle.Fill;
             chartComparison.Location = new Point(0, 0);
             chartComparison.Name = "chartComparison";
-            chartComparison.Size = new Size(479, 550);
+            chartComparison.Size = new Size(497, 550);
             chartComparison.TabIndex = 0;
             // 
             // grpResults
@@ -913,7 +966,7 @@ namespace AutoFocus
             grpResults.Dock = DockStyle.Fill;
             grpResults.Location = new Point(0, 0);
             grpResults.Name = "grpResults";
-            grpResults.Size = new Size(505, 235);
+            grpResults.Size = new Size(697, 250);
             grpResults.TabIndex = 0;
             grpResults.TabStop = false;
             grpResults.Text = "Results & Statistics";
@@ -931,8 +984,8 @@ namespace AutoFocus
             // resultsSplitContainer.Panel2
             // 
             resultsSplitContainer.Panel2.Controls.Add(rtbStatistics);
-            resultsSplitContainer.Size = new Size(499, 209);
-            resultsSplitContainer.SplitterDistance = 402;
+            resultsSplitContainer.Size = new Size(691, 224);
+            resultsSplitContainer.SplitterDistance = 556;
             resultsSplitContainer.TabIndex = 0;
             // 
             // dgvResults
@@ -945,7 +998,7 @@ namespace AutoFocus
             dgvResults.Name = "dgvResults";
             dgvResults.ReadOnly = true;
             dgvResults.RowHeadersWidth = 51;
-            dgvResults.Size = new Size(402, 209);
+            dgvResults.Size = new Size(556, 224);
             dgvResults.TabIndex = 0;
             // 
             // rtbStatistics
@@ -955,7 +1008,7 @@ namespace AutoFocus
             rtbStatistics.Location = new Point(0, 0);
             rtbStatistics.Name = "rtbStatistics";
             rtbStatistics.ReadOnly = true;
-            rtbStatistics.Size = new Size(93, 209);
+            rtbStatistics.Size = new Size(131, 224);
             rtbStatistics.TabIndex = 0;
             rtbStatistics.Text = "";
             // 
@@ -964,7 +1017,7 @@ namespace AutoFocus
             mainTableLayout.SetColumnSpan(statusStrip, 3);
             statusStrip.ImageScalingSize = new Size(20, 20);
             statusStrip.Items.AddRange(new ToolStripItem[] { lblStatus, progressBar, lblProcessingTime });
-            statusStrip.Location = new Point(0, 828);
+            statusStrip.Location = new Point(0, 878);
             statusStrip.Name = "statusStrip";
             statusStrip.Size = new Size(1627, 25);
             statusStrip.TabIndex = 3;
@@ -990,7 +1043,9 @@ namespace AutoFocus
             // 
             // MainForm
             // 
-            ClientSize = new Size(1627, 853);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1627, 903);
             Controls.Add(mainTableLayout);
             MinimumSize = new Size(1200, 700);
             Name = "MainForm";
@@ -1044,38 +1099,6 @@ namespace AutoFocus
             ResumeLayout(false);
         }
 
-        private void InitializeCharts()
-        {
-            // Configure Focus Scores Chart
-            var chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            chartArea1.Name = "ChartArea1";
-            chartArea1.AxisX.Title = "Focus Index";
-            chartArea1.AxisY.Title = "Focus Score";
-            this.chartFocusScores.ChartAreas.Add(chartArea1);
-
-            var legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            legend1.Name = "Legend1";
-            this.chartFocusScores.Legends.Add(legend1);
-
-            // Configure Histogram Chart
-            var chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            chartArea2.Name = "ChartArea2";
-            chartArea2.AxisX.Title = "Intensity (16-bit)";
-            chartArea2.AxisY.Title = "Frequency";
-            this.chartHistogram.ChartAreas.Add(chartArea2);
-
-            // Configure Comparison Chart
-            var chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            chartArea3.Name = "ChartArea3";
-            chartArea3.AxisX.Title = "Algorithm";
-            chartArea3.AxisY.Title = "Performance (ms)";
-            this.chartComparison.ChartAreas.Add(chartArea3);
-
-            var legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            legend3.Name = "Legend3";
-            this.chartComparison.Legends.Add(legend3);
-        }
-
         private TableLayoutPanel mainTableLayout;
         private Panel leftPanel;
         private Label lblX;
@@ -1089,5 +1112,8 @@ namespace AutoFocus
         private Panel rightPanel;
         private SplitContainer rightSplitContainer;
         private SplitContainer resultsSplitContainer;
+        private Button btnConvert;
+        private Button btnROICropper;
+        private Button btnScaleHistogram;
     }
 }

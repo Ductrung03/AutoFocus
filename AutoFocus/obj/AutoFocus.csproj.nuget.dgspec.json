@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/run/media/luckyboiz/01DB833D06AA7640/DucTrung/LK/Project/C#/WinForm/AutoFocus/AutoFocus/AutoFocus.csproj": {}
+    "D:\\LuckyBoiz\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\AutoFocus.csproj": {}
   },
   "projects": {
-    "/run/media/luckyboiz/01DB833D06AA7640/DucTrung/LK/Project/C#/WinForm/AutoFocus/AutoFocus/AutoFocus.csproj": {
+    "D:\\LuckyBoiz\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\AutoFocus.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/run/media/luckyboiz/01DB833D06AA7640/DucTrung/LK/Project/C#/WinForm/AutoFocus/AutoFocus/AutoFocus.csproj",
+        "projectUniqueName": "D:\\LuckyBoiz\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\AutoFocus.csproj",
         "projectName": "AutoFocus",
-        "projectPath": "/run/media/luckyboiz/01DB833D06AA7640/DucTrung/LK/Project/C#/WinForm/AutoFocus/AutoFocus/AutoFocus.csproj",
-        "packagesPath": "/home/luckyboiz/.nuget/packages/",
-        "outputPath": "/run/media/luckyboiz/01DB833D06AA7640/DucTrung/LK/Project/C#/WinForm/AutoFocus/AutoFocus/obj/",
+        "projectPath": "D:\\LuckyBoiz\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\AutoFocus.csproj",
+        "packagesPath": "C:\\Users\\LuckyBoiz\\.nuget\\packages\\",
+        "outputPath": "D:\\LuckyBoiz\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/luckyboiz/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\LuckyBoiz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0-windows"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -37,8 +43,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0-windows7.0": {
@@ -76,22 +81,15 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.20, 8.0.20]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.linux-x64",
-              "version": "[8.0.20, 8.0.20]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WindowsForms": {
+              "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.110/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.419/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

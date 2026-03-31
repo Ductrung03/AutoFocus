@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nghiên Cứu Các Thuật Toán AutoFocus và Tìm Kiếm Ảnh Nét Tối Ưu</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.8;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 40px;
+            background: white;
+            color: #000;
+        }
+        h1 {
+            text-align: center;
+            font-size: 20pt;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+        h2 {
+            font-size: 16pt;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+        }
+        h3 {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        h4 {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 12pt;
+        }
+        .abstract {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 30px 0;
+            border-left: 4px solid #333;
+        }
+        .equation {
+            text-align: center;
+            margin: 20px 0;
+            font-style: italic;
+            padding: 10px;
+            background: #fafafa;
+        }
+        .algorithm-box {
+            border: 1px solid #333;
+            padding: 15px;
+            margin: 20px 0;
+            background: #f9f9f9;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #e0e0e0;
+            font-weight: bold;
+        }
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .author-info {
+            text-align: center;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        .section-number {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .flowchart {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border: 1px dashed #666;
+        }
+        .note {
+            background: #fffacd;
+            padding: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <h1>Nghiên Cứu Các Thuật Toán Đo Lường Độ Nét AutoFocus và Chiến Lược Tìm Kiếm Ảnh Tối Ưu trong Xử Lý Ảnh Kỹ Thuật Số</h1>
+    
+    <div class="author-info">
+        <p><strong>Tóm tắt nghiên cứu về hệ thống AutoFocus</strong></p>
+        <p>Ngày hoàn thành: Tháng 10, 2025</p>
+    </div>
+
+    <div class="abstract">
+        <h3>TÓM TẮT</h3>
+        <p>
+            Bài báo này trình bày một nghiên cứu toàn diện về các thuật toán đo lường độ nét (focus measure) và chiến lược tìm kiếm tối ưu trong hệ thống AutoFocus. Nghiên cứu phân tích chi tiết sáu thuật toán đo lường độ nét chính bao gồm Tenengrad, Variance of Laplacian, Brenner Gradient, Sum Modified Laplacian, Tenenbaum, và FFT High Frequency, cùng với năm chiến lược tìm kiếm: Sequential, Binary Search, Hill Climbing, Ternary Search và Adaptive Search. Mỗi thuật toán được phân tích về nguyên lý toán học, ưu điểm, nhược điểm và các trường hợp ứng dụng phù hợp. Bài báo cũng đề xuất phương pháp tối ưu hóa hiệu suất thông qua xử lý song song và SIMD, cùng với các kỹ thuật chọn vùng quan tâm (ROI) tự động. Kết quả nghiên cứu cho thấy việc kết hợp linh hoạt giữa các thuật toán đo lường và chiến lược tìm kiếm có thể cải thiện đáng kể cả độ chính xác lẫn tốc độ xử lý trong các ứng dụng AutoFocus thực tế.
+        </p>
+    </div>
+
+    <h2>1. GIỚI THIỆU</h2>
+    
+    <h3>1.1. Bối cảnh nghiên cứu</h3>
+    <p>
+        Trong lĩnh vực xử lý ảnh kỹ thuật số và thị giác máy tính, việc xác định độ nét của ảnh là một bài toán cơ bản nhưng vô cùng quan trọng. Hệ thống AutoFocus tự động đóng vai trò then chốt trong nhiều ứng dụng từ nhiếp ảnh kỹ thuật số, kính hiển vi tự động, camera giám sát, đến các hệ thống kiểm tra chất lượng công nghiệp. Thách thức chính nằm ở việc phát triển các thuật toán có khả năng đánh giá chính xác độ nét của ảnh trong thời gian thực, đồng thời tối ưu hóa quá trình tìm kiếm để giảm thiểu số lượng ảnh cần xử lý.
+    </p>
+
+    <h3>1.2. Vấn đề nghiên cứu</h3>
+    <p>
+        Hệ thống AutoFocus phải giải quyết hai vấn đề chính:
+    </p>
+    <ul>
+        <li><strong>Đo lường độ nét:</strong> Làm thế nào để định lượng chính xác mức độ nét của một ảnh thông qua các chỉ số toán học? Mỗi phương pháp đo lường có đặc điểm gì và phù hợp với loại ảnh nào?</li>
+        <li><strong>Tìm kiếm tối ưu:</strong> Trong một chuỗi ảnh với các mức độ lấy nét khác nhau, làm thế nào để tìm ra ảnh nét nhất một cách nhanh chóng mà không cần phải xử lý toàn bộ chuỗi ảnh?</li>
+    </ul>
+
+    <h3>1.3. Mục tiêu nghiên cứu</h3>
+    <p>
+        Nghiên cứu này nhằm mục đích:
+    </p>
+    <ol>
+        <li>Phân tích chi tiết các thuật toán đo lường độ nét phổ biến, bao gồm nguyên lý toán học, độ phức tạp tính toán và đặc điểm ứng dụng</li>
+        <li>Đánh giá các chiến lược tìm kiếm khác nhau về mặt hiệu quả và hiệu suất</li>
+        <li>So sánh ưu nhược điểm của từng phương pháp trong các điều kiện khác nhau</li>
+        <li>Đề xuất các phương pháp tối ưu hóa và kết hợp thuật toán phù hợp cho từng bối cảnh ứng dụng cụ thể</li>
+    </ol>
+
+    <h3>1.4. Cấu trúc bài báo</h3>
+    <p>
+        Bài báo được tổ chức thành các phần chính: Phần 2 trình bày chi tiết sáu thuật toán đo lường độ nét với phân tích toán học sâu; Phần 3 mô tả năm chiến lược tìm kiếm tối ưu; Phần 4 thảo luận về các kỹ thuật tối ưu hóa hiệu suất; Phần 5 so sánh và đánh giá các phương pháp; và Phần 6 đưa ra kết luận cùng hướng phát triển tương lai.
+    </p>
+
+    <h2>2. CÁC THUẬT TOÁN ĐO LƯỜNG ĐỘ NÉT (FOCUS MEASURE ALGORITHMS)</h2>
+
+    <p>
+        Các thuật toán đo lường độ nét hoạt động dựa trên nguyên lý cơ bản: ảnh nét có biên độ cao tần cao hơn ảnh mờ. Khi ảnh bị mờ, các chi tiết nhỏ và cạnh sắc nét bị làm mờ đi, dẫn đến giảm năng lượng tần số cao. Các thuật toán khác nhau sử dụng các phương pháp khác nhau để định lượng đặc tính này.
+    </p>
+
+    <h3>2.1. Thuật toán Tenengrad</h3>
+    
+    <h4>2.1.1. Nguyên lý hoạt động</h4>
+    <p>
+        Tenengrad là một trong những thuật toán đo lường độ nét phổ biến nhất, dựa trên việc tính toán độ lớn gradient của ảnh sử dụng toán tử Sobel. Thuật toán này hoạt động trên giả định rằng ảnh nét có biên độ gradient lớn hơn do sự thay đổi cường độ mạnh mẽ tại các cạnh và chi tiết.
+    </p>
+
+    <h4>2.1.2. Công thức toán học</h4>
+    <div class="equation">
+        <p><strong>Gradient theo phương X:</strong> G<sub>x</sub>(x,y) = Sobel<sub>x</sub> ⊗ I(x,y)</p>
+        <p><strong>Gradient theo phương Y:</strong> G<sub>y</sub>(x,y) = Sobel<sub>y</sub> ⊗ I(x,y)</p>
+        <p><strong>Độ lớn gradient:</strong> M(x,y) = √(G<sub>x</sub>² + G<sub>y</sub>²)</p>
+        <p><strong>Chỉ số Tenengrad:</strong> F<sub>Tenengrad</sub> = (1/N) × ΣΣ M(x,y)²</p>
+    </div>
+
+    <p>
+        Trong đó:
+    </p>
+    <ul>
+        <li>I(x,y) là giá trị cường độ pixel tại vị trí (x,y)</li>
+        <li>⊗ ký hiệu phép tích chập (convolution)</li>
+        <li>Sobel<sub>x</sub> và Sobel<sub>y</sub> là các kernel Sobel theo phương X và Y</li>
+        <li>N là tổng số pixel trong ảnh</li>
+    </ul>
+
+    <h4>2.1.3. Chi tiết triển khai</h4>
+    <div class="algorithm-box">
+        <strong>Các bước thực hiện:</strong>
+        <ol>
+            <li><strong>Tiền xử lý:</strong> Chuyển đổi ảnh sang định dạng số thực (float) để tránh tràn số khi tính toán gradient</li>
+            <li><strong>Tính gradient X:</strong> Áp dụng kernel Sobel theo phương ngang để phát hiện các cạnh dọc</li>
+            <li><strong>Tính gradient Y:</strong> Áp dụng kernel Sobel theo phương dọc để phát hiện các cạnh ngang</li>
+            <li><strong>Tính magnitude:</strong> Kết hợp hai gradient thành độ lớn tổng hợp bằng công thức Euclidean hoặc bình phương tổng</li>
+            <li><strong>Tích lũy:</strong> Cộng dồn bình phương magnitude của tất cả các pixel</li>
+            <li><strong>Chuẩn hóa:</strong> Chia cho tổng số pixel để có giá trị độc lập với kích thước ảnh</li>
+        </ol>
+    </div>
+
+    <h4>2.1.4. Kernel Sobel</h4>
+    <p>
+        Kernel Sobel là các ma trận 3×3 được thiết kế để tính gradient rời rạc:
+    </p>
+    <div class="equation">
+        <p><strong>Kernel Sobel X:</strong></p>
+        <pre>
+    [-1  0  +1]
+    [-2  0  +2]
+    [-1  0  +1]
+        </pre>
+        <p><strong>Kernel Sobel Y:</strong></p>
+        <pre>
+    [-1  -2  -1]
+    [ 0   0   0]
+    [+1  +2  +1]
+        </pre>
+    </div>
+
+    <h4>2.1.5. Ưu điểm</h4>
+    <ul>
+        <li><strong>Độ tin cậy cao:</strong> Tenengrad là một trong những phương pháp ổn định nhất, ít bị ảnh hưởng bởi nhiễu nhờ vào việc sử dụng kernel Sobel có tính chất làm mịn</li>
+        <li><strong>Nhạy với cạnh:</strong> Rất hiệu quả trong việc phát hiện các cạnh sắc nét và chi tiết tinh vi</li>
+        <li><strong>Đơn điệu:</strong> Hàm focus thường có tính đơn điệu tốt, giúp thuận lợi cho các thuật toán tìm kiếm</li>
+        <li><strong>Phổ biến:</strong> Được nghiên cứu và ứng dụng rộng rãi, có nhiều tài liệu tham khảo</li>
+    </ul>
+
+    <h4>2.1.6. Nhược điểm</h4>
+    <ul>
+        <li><strong>Chi phí tính toán:</strong> Yêu cầu tính toán gradient theo hai phương và căn bậc hai, dẫn đến độ phức tạp O(N×M) với nhiều phép toán</li>
+        <li><strong>Nhạy với nhiễu:</strong> Mặc dù kernel Sobel có làm mịn, nhưng vẫn có thể bị ảnh hưởng bởi nhiễu cường độ cao</li>
+        <li><strong>Kernel size:</strong> Hiệu suất phụ thuộc vào kích thước kernel, cần điều chỉnh cho từng loại ảnh</li>
+    </ul>
+
+    <h4>2.1.7. Ứng dụng phù hợp</h4>
+    <ul>
+        <li>Ảnh có nhiều cạnh rõ ràng và chi tiết sắc nét</li>
+        <li>Hệ thống kính hiển vi tự động</li>
+        <li>Kiểm tra chất lượng công nghiệp</li>
+        <li>Nhiếp ảnh tự động khi cần độ chính xác cao</li>
+    </ul>
+
+    <h3>2.2. Thuật toán Variance of Laplacian</h3>
+    
+    <h4>2.2.1. Nguyên lý hoạt động</h4>
+    <p>
+        Variance of Laplacian (VOL) đo lường độ nét dựa trên phương sai của đạo hàm bậc hai của ảnh. Toán tử Laplacian là một bộ lọc đẳng hướng (isotropic) phát hiện các vùng thay đổi cường độ nhanh, tức là các cạnh và chi tiết. Phương sai của kết quả Laplacian phản ánh mức độ phân tán của các giá trị này, cao hơn ở ảnh nét.
+    </p>
+
+    <h4>2.2.2. Công thức toán học</h4>
+    <div class="equation">
+        <p><strong>Toán tử Laplacian:</strong> ∇²I = ∂²I/∂x² + ∂²I/∂y²</p>
+        <p><strong>Laplacian rời rạc:</strong> L(x,y) = Laplacian ⊗ I(x,y)</p>
+        <p><strong>Trung bình:</strong> μ = (1/N) × ΣΣ L(x,y)</p>
+        <p><strong>Variance:</strong> σ² = (1/N) × ΣΣ [L(x,y) - μ]²</p>
+        <p><strong>Chỉ số VOL:</strong> F<sub>VOL</sub> = σ²</p>
+    </div>
+
+    <h4>2.2.3. Kernel Laplacian</h4>
+    <p>
+        Kernel Laplacian tiêu chuẩn 3×3:
+    </p>
+    <div class="equation">
+        <pre>
+    [ 0  -1   0]
+    [-1   4  -1]
+    [ 0  -1   0]
+        </pre>
+        <p>Hoặc kernel 8-kết nối:</p>
+        <pre>
+    [-1  -1  -1]
+    [-1   8  -1]
+    [-1  -1  -1]
+        </pre>
+    </div>
+
+    <h4>2.2.4. Chi tiết triển khai</h4>
+    <div class="algorithm-box">
+        <strong>Quy trình thực hiện:</strong>
+        <ol>
+            <li><strong>Chuyển đổi:</strong> Chuyển ảnh sang dạng float để đảm bảo độ chính xác số học</li>
+            <li><strong>Tính Laplacian:</strong> Áp dụng toán tử Laplacian qua phép tích chập, phát hiện các vùng có thay đổi cường độ cao</li>
+            <li><strong>Tính trung bình:</strong> Tính giá trị trung bình của ma trận Laplacian</li>
+            <li><strong>Tính variance:</strong> Tính phương sai bằng cách lấy trung bình bình phương sai lệch với giá trị trung bình</li>
+            <li><strong>Trả về kết quả:</strong> Giá trị phương sai chính là chỉ số độ nét</li>
+        </ol>
+    </div>
+
+    <h4>2.2.5. Đặc điểm kỹ thuật</h4>
+    <p>
+        <strong>Tính đẳng hướng:</strong> Một ưu điểm quan trọng của Laplacian là tính đẳng hướng - nó phát hiện cạnh theo mọi hướng như nhau, không thiên về phương ngang hay dọc như Sobel. Điều này làm cho VOL đặc biệt hiệu quả với ảnh có chi tiết phức tạp theo nhiều hướng.
+    </p>
+    <p>
+        <strong>Độ nhạy với nhiễu:</strong> Laplacian là đạo hàm bậc hai nên rất nhạy với nhiễu. Để giảm thiểu, người ta thường kết hợp với bộ lọc Gaussian (tạo thành LoG - Laplacian of Gaussian) hoặc sử dụng kernel lớn hơn.
+    </p>
+
+    <h4>2.2.6. Ưu điểm</h4>
+    <ul>
+        <li><strong>Tính toán nhanh:</strong> Chỉ cần một phép tích chập đơn, không cần kết hợp nhiều gradient như Tenengrad</li>
+        <li><strong>Đẳng hướng:</strong> Phát hiện cạnh và chi tiết theo mọi hướng đồng đều</li>
+        <li><strong>Kháng nhiễu tốt:</strong> Sử dụng phương sai thay vì giá trị tuyệt đối giúp giảm ảnh hưởng của nhiễu đơn lẻ</li>
+        <li><strong>Đơn giản:</strong> Dễ triển khai và tối ưu hóa</li>
+    </ul>
+
+    <h4>2.2.7. Nhược điểm</h4>
+    <ul>
+        <li><strong>Nhạy với nhiễu:</strong> Đạo hàm bậc hai làm khuếch đại nhiễu, đặc biệt với ảnh chất lượng thấp</li>
+        <li><strong>Thiếu thông tin hướng:</strong> Không cung cấp thông tin về hướng của cạnh</li>
+        <li><strong>Ngưỡng zero-crossing:</strong> Có thể phát hiện nhiều zero-crossing giả do nhiễu</li>
+    </ul>
+
+    <h4>2.2.8. Ứng dụng phù hợp</h4>
+    <ul>
+        <li>Ảnh có chi tiết phức tạp theo nhiều hướng</li>
+        <li>Hệ thống cần xử lý nhanh với tài nguyên hạn chế</li>
+        <li>Ảnh có chất lượng tương đối tốt (ít nhiễu)</li>
+        <li>Ứng dụng thời gian thực cần tốc độ cao</li>
+    </ul>
+
+    <h3>2.3. Thuật toán Brenner Gradient</h3>
+    
+    <h4>2.3.1. Nguyên lý hoạt động</h4>
+    <p>
+        Brenner Gradient là một trong những thuật toán focus measure đơn giản nhất, được đề xuất bởi Brenner vào năm 1976. Thuật toán này đo lường độ nét bằng cách tính tổng bình phương sai phân cường độ giữa các pixel cách nhau 2 đơn vị theo phương ngang. Ý tưởng cơ bản là ảnh nét có sự thay đổi cường độ mạnh mẽ hơn giữa các pixel xa nhau.
+    </p>
+
+    <h4>2.3.2. Công thức toán học</h4>
+    <div class="equation">
+        <p><strong>Sai phân:</strong> D(x,y) = I(x+2,y) - I(x,y)</p>
+        <p><strong>Chỉ số Brenner:</strong> F<sub>Brenner</sub> = (1/N) × ΣΣ [D(x,y)]²</p>
+    </div>
+
+    <p>
+        Trong đó:
+    </p>
+    <ul>
+        <li>D(x,y) là sai phân cường độ tại vị trí (x,y)</li>
+        <li>Khoảng cách 2 pixel được chọn để tăng độ nhạy với độ nét</li>
+        <li>Bình phương được sử dụng để làm nổi bật các sai phân lớn</li>
+    </ul>
+
+    <h4>2.3.3. Chi tiết triển khai</h4>
+    <div class="algorithm-box">
+        <strong>Thuật toán chi tiết:</strong>
+        <ol>
+            <li><strong>Khởi tạo:</strong> Chuyển ảnh sang dạng float nếu cần, khởi tạo biến tổng = 0</li>
+            <li><strong>Duyệt ảnh:</strong> Duyệt qua từng pixel (x,y) từ 0 đến width-2</li>
+            <li><strong>Tính sai phân:</strong> Lấy giá trị tại (x+2,y) trừ giá trị tại (x,y)</li>
+            <li><strong>Bình phương:</strong> Bình phương giá trị sai phân</li>
+            <li><strong>Tích lũy:</strong> Cộng dồn vào tổng</li>
+            <li><strong>Chuẩn hóa:</strong> Chia tổng cho số pixel để có giá trị chuẩn hóa</li>
+        </ol>
+    </div>
+
+    <h4>2.3.4. Phân tích độ phức tạp</h4>
+    <p>
+        <strong>Độ phức tạp thời gian:</strong> O(N×M) trong đó N và M là kích thước ảnh. Tuy nhiên, Brenner chỉ yêu cầu một phép trừ và một phép nhân cho mỗi pixel, nên thực tế nhanh hơn nhiều so với các phương pháp cần tích chập như Tenengrad hay VOL.
+    </p>
+    <p>
+        <strong>Độ phức tạp không gian:</strong> O(1) - chỉ cần một biến để lưu tổng, không cần bộ nhớ phụ để lưu gradient trung gian.
+    </p>
+
+    <h4>2.3.5. Biến thể và cải tiến</h4>
+    <p>
+        <strong>Brenner Gradient 2D:</strong> Mở rộng sang hai chiều:
+    </p>
+    <div class="equation">
+        <p>F<sub>Brenner2D</sub> = ΣΣ [I(x+2,y) - I(x,y)]² + [I(x,y+2) - I(x,y)]²</p>
+    </div>
+    <p>
+        <strong>Modified Brenner:</strong> Sử dụng giá trị tuyệt đối thay vì bình phương:
+    </p>
+    <div class="equation">
+        <p>F<sub>ModBrenner</sub> = ΣΣ |I(x+2,y) - I(x,y)|</p>
+    </div>
+
+    <h4>2.3.6. Ưu điểm</h4>
+    <ul>
+        <li><strong>Cực kỳ nhanh:</strong> Chỉ cần hai phép toán cơ bản (trừ và nhân) cho mỗi pixel</li>
+        <li><strong>Đơn giản:</strong> Dễ hiểu, dễ triển khai, dễ tối ưu hóa</li>
+        <li><strong>Hiệu quả bộ nhớ:</strong> Không cần lưu trữ kết quả trung gian</li>
+        <li><strong>Phù hợp SIMD:</strong> Rất dễ vector hóa cho xử lý song song</li>
+        <li><strong>Không cần kernel:</strong> Không yêu cầu phép tích chập phức tạp</li>
+    </ul>
+
+    <h4>2.3.7. Nhược điểm</h4>
+    <ul>
+        <li><strong>Chỉ xét một hướng:</strong> Bản gốc chỉ tính gradient ngang, bỏ qua gradient dọc</li>
+        <li><strong>Nhạy với nhiễu:</strong> Không có cơ chế làm mịn, dễ bị ảnh hưởng bởi nhiễu</li>
+        <li><strong>Độ phân giải thấp:</strong> Khoảng cách 2 pixel có thể bỏ qua chi tiết nhỏ</li>
+        <li><strong>Thiên về cạnh ngang:</strong> Không tốt cho ảnh có nhiều chi tiết dọc</li>
+        <li><strong>Kém ổn định:</strong> Kết quả có thể dao động nhiều với các loại ảnh khác nhau</li>
+    </ul>
+
+    <h4>2.3.8. Ứng dụng phù hợp</h4>
+    <ul>
+        <li>Hệ thống nhúng với tài nguyên hạn chế</li>
+        <li>Ứng dụng thời gian thực cần tốc độ cực nhanh</li>
+        <li>Ảnh có cấu trúc chủ yếu theo phương ngang</li>
+        <li>Tiền xử lý nhanh trước khi áp dụng thuật toán chính xác hơn</li>
+    </ul>
+
+    <h3>2.4. Thuật toán Sum Modified Laplacian (SML)</h3>
+    
+    <h4>2.4.1. Nguyên lý hoạt động</h4>
+    <p>
+        Sum Modified Laplacian là một cải tiến của toán tử Laplacian truyền thống, được thiết kế để tăng độ tin cậy và giảm ảnh hưởng của nhiễu. Thay vì sử dụng đạo hàm bậc hai trực tiếp, SML tính đạo hàm bậc hai theo từng hướng riêng biệt, lấy giá trị tuyệt đối, áp dụng ngưỡng, và cuối cùng tổng hợp lại. Ngưỡng giúp loại bỏ các giá trị nhiễu nhỏ, chỉ giữ lại các thay đổi cường độ đáng kể.
+    </p>
+
+    <h4>2.4.2. Công thức toán học</h4>
+    <div class="equation">
+        <p><strong>Modified Laplacian X:</strong> ML<sub>x</sub>(x,y) = |2×I(x,y) - I(x-1,y) - I(x+1,y)|</p>
+        <p><strong>Modified Laplacian Y:</strong> ML<sub>y</sub>(x,y) = |2×I(x,y) - I(x,y-1) - I(x,y+1)|</p>
+        <p><strong>Tổng:</strong> ML(x,y) = ML<sub>x</sub>(x,y) + ML<sub>y</sub>(x,y)</p>
+        <p><strong>Áp dụng ngưỡng:</strong> ML<sub>T</sub>(x,y) = ML(x,y) nếu ML(x,y) > T, ngược lại = 0</p>
+        <p><strong>Chỉ số SML:</strong> F<sub>SML</sub> = (1/N) × ΣΣ ML<sub>T</sub>(x,y)</p>
+    </div>
+
+    <h4>2.4.3. Chi tiết triển khai</h4>
+    <div class="algorithm-box">
+        <strong>Quy trình tính toán:</strong>
+        <ol>
+            <li><strong>Chuẩn bị:</strong> Chuyển ảnh sang float, khởi tạo ma trận kết quả</li>
+            <li><strong>Tính ML theo X:</strong> Với mỗi pixel, tính đạo hàm bậc hai theo phương X bằng công thức sai phân hữu hạn</li>
+            <li><strong>Tính ML theo Y:</strong> Tương tự cho phương Y</li>
+            <li><strong>Lấy giá trị tuyệt đối:</strong> Áp dụng hàm abs() cho cả hai ma trận</li>
+            <li><strong>Tổng hợp:</strong> Cộng hai ma trận lại với nhau</li>
+            <li><strong>Ngưỡng:</strong> Áp dụng ngưỡng T (thường T=100 cho ảnh 8-bit) để loại bỏ nhiễu</li>
+            <li><strong>Tổng:</strong> Cộng tất cả giá trị sau ngưỡng</li>
+            <li><strong>Chuẩn hóa:</strong> Chia cho số pixel</li>
+        </ol>
+    </div>
+
+    <h4>2.4.4. Lựa chọn ngưỡng</h4>
+    <p>
+        Việc chọn ngưỡng T là quan trọng:
+    </p>
+    <ul>
+        <li><strong>Ảnh 8-bit:</strong> T = 50-150 (thường 100)</li>
+        <li><strong>Ảnh 16-bit:</strong> T = 500-1500 (thường 1000)</li>
+        <li><strong>Ảnh nhiễu cao:</strong> Tăng T để loại bỏ nhiễu</li>
+        <li><strong>Ảnh chi tiết nhỏ:</strong> Giảm T để giữ lại chi tiết</li>
+    </ul>
+    <p>
+        Trong triển khai, có thể sử dụng ngưỡng thích nghi dựa trên phân bố cường độ của ảnh:
+    </p>
+    <div class="equation">
+        <p>T = k × σ<sub>I</sub></p>
+    </div>
+    <p>Trong đó σ<sub>I</sub> là độ lệch chuẩn cường độ ảnh và k là hệ số điều chỉnh (thường k=0.1-0.3).</p>
+
+    <h4>2.4.5. So sánh với Laplacian thông thường</h4>
+    <table class="comparison-table">
+        <tr>
+            <th>Đặc điểm</th>
+            <th>Laplacian thông thường</th>
+            <th>Sum Modified Laplacian</th>
+        </tr>
+        <tr>
+            <td>Cách tính</td>
+            <td>Một kernel tích chập</td>
+            <td>Tính riêng theo từng hướng</td>
+        </tr>
+        <tr>
+            <td>Xử lý nhiễu</td>
+            <td>Không có cơ chế</td>
+            <td>Có ngưỡng loại nhiễu</td>
+        </tr>
+        <tr>
+            <td>Độ nhạy</td>
+            <td>Rất nhạy với nhiễu</td>
+            <td>Kháng nhiễu tốt hơn</td>
+        </tr>
+        <tr>
+            <td>Tính toán</td>
+            <td>Nhanh hơn</td>
+            <td>Chậm hơn do nhiều bước</td>
+        </tr>
+    </table>
+
+    <h4>2.4.6. Ưu điểm</h4>
+    <ul>
+        <li><strong>Kháng nhiễu tốt:</strong> Ngưỡng giúp loại bỏ hiệu quả các giá trị nhiễu nhỏ</li>
+        <li><strong>Độ chính xác cao:</strong> Phù hợp với ảnh có nhiễu trung bình đến cao</li>
+        <li><strong>Linh hoạt:</strong> Có thể điều chỉnh ngưỡng theo đặc điểm ảnh</li>
+        <li><strong>Tách biệt hướng:</strong> Xử lý riêng theo X và Y giúp phân tích tốt hơn</li>
+    </ul>
+
+    <h4>2.4.7. Nhược điểm</h4>
+    <ul>
+        <li><strong>Chi phí tính toán cao:</strong> Cần nhiều bước xử lý hơn Laplacian thông thường</li>
+        <li><strong>Phụ thuộc ngưỡng:</strong> Hiệu suất phụ thuộc nhiều vào việc chọn ngưỡng phù hợp</li>
+        <li><strong>Phức tạp triển khai:</strong> Khó tối ưu hóa hơn các phương pháp đơn giản</li>
+        <li><strong>Mất chi tiết:</strong> Ngưỡng quá cao có thể loại bỏ cả chi tiết quan trọng</li>
+    </ul>
+
+    <h4>2.4.8. Ứng dụng phù hợp</h4>
+    <ul>
+        <li>Ảnh y tế với nhiễu đáng kể</li>
+        <li>Ảnh từ camera chất lượng thấp</li>
+        <li>Môi trường ánh sáng kém</li>
+        <li>Khi độ chính xác quan trọng hơn tốc độ</li>
+    </ul>
+
+    <h3>2.5. Thuật toán Tenenbaum</h3>
+    
+    <h4>2.5.1. Nguyên lý hoạt động</h4>
+    <p>
+        Thuật toán Tenenbaum là một biến thể cải tiến của Tenengrad, kết hợp giữa gradient và phương sai để tạo ra một chỉ số focus measure ổn định hơn. Thuật toán này không chỉ xem xét độ lớn trung bình của gradient mà còn xem xét sự phân tán (variance) của nó. Ý tưởng là ảnh nét không chỉ có gradient lớn mà còn có sự phân bố gradient đồng đều, phản ánh chi tiết phong phú.
+    </p>
+
+    <h4>2.5.2. Công thức toán học</h4>
+    <div class="equation">
+        <p><strong>Gradient magnitude:</strong> M(x,y) = √(G<sub>x</sub>² + G<sub>y</sub>²)</p>
+        <p><strong>Trung bình:</strong> μ<sub>M</sub> = (1/N) × ΣΣ M(x,y)</p>
+        <p><strong>Độ lệch chuẩn:</strong> σ<sub>M</sub> = √[(1/N) × ΣΣ (M(x,y) - μ<sub>M</sub>)²]</p>
+        <p><strong>Chỉ số Tenenbaum:</strong> F<sub>Tenenbaum</sub> = μ<sub>M</sub> × σ<sub>M</sub></p>
+    </div>
+
+    <h4>2.5.3. Giải thích công thức</h4>
+    <p>
+        <strong>Tích trung bình và độ lệch chuẩn:</strong> Công thức F = μ × σ kết hợp hai khía cạnh:
+    </p>
+    <ul>
+        <li><strong>Trung bình μ:</strong> Đại diện cho "năng lượng" gradient tổng thể - ảnh nét có gradient lớn</li>
+        <li><strong>Độ lệch chuẩn σ:</strong> Đại diện cho sự đa dạng của gradient - ảnh nét có gradient phân bố rộng, không tập trung vào một vài vùng</li>
+    </ul>
+    <p>
+        Nhân hai giá trị này tạo ra một chỉ số cân bằng: ảnh phải vừa có gradient mạnh vừa có gradient phân tán đều mới đạt điểm cao.
+    </p>
+
+    <h4>2.5.4. Chi tiết triển khai</h4>
+    <div class="algorithm-box">
+        <strong>Thuật toán chi tiết:</strong>
+        <ol>
+            <li><strong>Tính gradient:</strong> Tính G<sub>x</sub> và G<sub>y</sub> giống Tenengrad</li>
+            <li><strong>Tính magnitude:</strong> M = √(G<sub>x</sub>² + G<sub>y</sub>²) hoặc dùng hàm Cv2.Magnitude</li>
+            <li><strong>Tính thống kê:</strong> Sử dụng Cv2.MeanStdDev để tính trung bình và độ lệch chuẩn trong một lần duyệt</li>
+            <li><strong>Kết hợp:</strong> Nhân μ với σ</li>
+            <li><strong>Trả về:</strong> Giá trị tích làm chỉ số focus</li>
+        </ol>
+    </div>
+
+    <h4>2.5.5. Tối ưu hóa tính toán</h4>
+    <p>
+        Để tính hiệu quả mean và stddev, có thể sử dụng phương pháp một lượt (one-pass):
+    </p>
+    <div class="equation">
+        <p>μ = ΣM / N</p>
+        <p>σ² = (ΣM² / N) - μ²</p>
+    </div>
+    <p>
+        Phương pháp này chỉ cần duyệt ảnh một lần, tính đồng thời tổng M và tổng M², sau đó tính μ và σ.
+    </p>
+
+    <h4>2.5.6. So sánh với Tenengrad</h4>
+    <table class="comparison-table">
+        <tr>
+            <th>Khía cạnh</th>
+            <th>Tenengrad</th>
+            <th>Tenenbaum</th>
+        </tr>
+        <tr>
+            <td>Công thức</td>
+            <td>Σ M²</td>
+            <td>μ<sub>M</sub> × σ<sub>M</sub></td>
+        </tr>
+        <tr>
+            <td>Thông tin</td>
+            <td>Chỉ xét tổng năng lượng</td>
+            <td>Xét cả năng lượng và phân bố</td>
+        </tr>
+        <tr>
+            <td>Độ ổn định</td>
+            <td>Tốt</td>
+            <td>Tốt hơn nhờ xét variance</td>
+        </tr>
+        <tr>
+            <td>Tính toán</td>
+            <td>Nhanh hơn chút</td>
+            <td>Cần thêm bước tính stddev</td>
+        </tr>
+    </table>
+
+    <h4>2.5.7. Ưu điểm</h4>
+    <ul>
+        <li><strong>Cân bằng:</strong> Không bị ảnh hưởng bởi một vài cạnh mạnh cục bộ</li>
+        <li><strong>Ổn định:</strong> Xét variance giúp giảm ảnh hưởng của outlier</li>
+        <li><strong>Đa dạng:</strong> Phát hiện tốt ảnh có chi tiết phong phú đồng đều</li>
+        <li><strong>Đơn điệu:</strong> Hàm focus có tính đơn điệu tốt</li>
+    </ul>
+
+    <h4>2.5.8. Nhược điểm</h4>
+    <ul>
+        <li><strong>Chi phí cao hơn:</strong> Cần thêm bước tính thống kê so với Tenengrad</li>
+        <li><strong>Phức tạp:</strong> Khó giải thích và debug hơn</li>
+        <li><strong>Nhạy với phân bố:</strong> Có thể cho kết quả thấp với ảnh có chi tiết tập trung</li>
+    </ul>
+
+    <h4>2.5.9. Ứng dụng phù hợp</h4>
+    <ul>
+        <li>Ảnh có chi tiết phân bố đều</li>
+        <li>Cảnh tự nhiên với texture phong phú</li>
+        <li>Khi cần độ tin cậy cao hơn Tenengrad</li>
+        <li>Ứng dụng khoa học cần kết quả ổn định</li>
+    </ul>
+
+    <h3>2.6. Thuật toán FFT High Frequency</h3>
+    
+    <h4>2.6.1. Nguyên lý hoạt động</h4>
+    <p>
+        FFT High Frequency là thuật toán duy nhất trong số sáu thuật toán hoạt động hoàn toàn trong miền tần số. Dựa trên nguyên lý biến đổi Fourier, thuật toán chuyển ảnh từ miền không gian (spatial domain) sang miền tần số (frequency domain), nơi mà độ nét được biểu diễn qua năng lượng tần số cao. Ảnh nét chứa nhiều chi tiết nhỏ và cạnh sắc, tương ứng với năng lượng cao ở vùng tần số cao trong phổ Fourier.
+    </p>
+
+    <h4>2.6.2. Cơ sở lý thuyết</h4>
+    <p>
+        <strong>Biến đổi Fourier rời rạc 2D (2D DFT):</strong>
+    </p>
+    <div class="equation">
+        <p>F(u,v) = ΣΣ I(x,y) × e<sup>-j2π(ux/M + vy/N)</sup></p>
+    </div>
+    <p>
+        Trong đó:
+    </p>
+    <ul>
+        <li>F(u,v) là giá trị phức tại tần số (u,v)</li>
+        <li>I(x,y) là giá trị pixel tại vị trí không gian (x,y)</li>
+        <li>M×N là kích thước ảnh</li>
+    </ul>
+    <p>
+        <strong>Magnitude spectrum:</strong> Độ lớn của mỗi thành phần tần số:
+    </p>
+    <div class="equation">
+        <p>|F(u,v)| = √[Re(F(u,v))² + Im(F(u,v))²]</p>
+    </div>
+
+    <h4>2.6.3. Chi tiết triển khai</h4>
+    <div class="algorithm-box">
+        <strong>Quy trình thực hiện:</strong>
+        <ol>
+            <li><strong>Chuẩn bị ảnh:</strong> Chuyển sang float32</li>
+            <li><strong>Padding:</strong> Mở rộng ảnh đến kích thước tối ưu cho FFT (thường lũy thừa 2) bằng CopyMakeBorder</li>
+            <li><strong>FFT:</strong> Áp dụng Discrete Fourier Transform bằng Cv2.Dft, nhận ma trận phức</li>
+            <li><strong>Tách phần thực và ảo:</strong> Split kết quả FFT thành hai kênh</li>
+            <li><strong>Tính magnitude:</strong> Sử dụng Cv2.Magnitude để tính độ lớn</li>
+            <li><strong>Shift:</strong> Dịch chuyển phổ tần số để tần số thấp ở giữa, tần số cao ở ngoài</li>
+            <li><strong>Xác định vùng:</strong> Xác định tâm và bán kính để phân chia tần số cao/thấp</li>
+            <li><strong>Tính năng lượng:</strong> 
+                <ul>
+                    <li>Duyệt qua mọi điểm (u,v) trong phổ</li>
+                    <li>Tính khoảng cách từ (u,v) đến tâm</li>
+                    <li>Nếu khoảng cách > radius: cộng vào năng lượng tần số cao</li>
+                    <li>Cộng tất cả vào tổng năng lượng</li>
+                </ul>
+            </li>
+            <li><strong>Tính tỷ lệ:</strong> Chia năng lượng tần số cao cho tổng năng lượng</li>
+            <li><strong>Dọn dẹp:</strong> Giải phóng tất cả ma trận trung gian</li>
+        </ol>
+    </div>
+
+    <h4>2.6.4. Phân vùng tần số</h4>
+    <p>
+        Việc phân chia tần số cao/thấp rất quan trọng:
+    </p>
+    <div class="equation">
+        <p>Khoảng cách: d(u,v) = √[(u - u<sub>center</sub>)² + (v - v<sub>center</sub>)²]</p>
+        <p>Bán kính ngưỡng: r = min(width, height) / 4</p>
+        <p>Tần số cao nếu: d(u,v) > r</p>
+    </div>
+    <p>
+        Tỷ lệ r = 1/4 kích thước ảnh là giá trị cân bằng. Có thể điều chỉnh:
+    </p>
+    <ul>
+        <li><strong>r nhỏ hơn (1/6):</strong> Chỉ xét tần số rất cao, nhạy với chi tiết cực nhỏ</li>
+        <li><strong>r lớn hơn (1/3):</strong> Xét cả tần số trung bình, ổn định hơn</li>
+    </ul>
+
+    <h4>2.6.5. Tối ưu hóa FFT</h4>
+    <p>
+        <strong>Kích thước tối ưu:</strong> FFT nhanh nhất khi kích thước là 2<sup>n</sup>, 3<sup>n</sup>, 5<sup>n</sup>, hoặc tích của chúng. OpenCV cung cấp GetOptimalDFTSize để tìm kích thước tốt nhất.
+    </p>
+    <p>
+        <strong>Parallel FFT:</strong> Có thể chia ảnh thành các khối nhỏ, FFT song song, sau đó kết hợp. Tuy nhiên cần cẩn thận về hiệu ứng biên.
+    </p>
+
+    <h4>2.6.6. Ưu điểm</h4>
+    <ul>
+        <li><strong>Cơ sở lý thuyết vững:</strong> Dựa trên lý thuyết biến đổi Fourier đã được chứng minh</li>
+        <li><strong>Toàn cục:</strong> Xét toàn bộ ảnh trong miền tần số, không bị ảnh hưởng bởi nhiễu cục bộ</li>
+        <li><strong>Không thiên hướng:</strong> Không thiên về bất kỳ hướng nào</li>
+        <li><strong>Phân tích sâu:</strong> Cung cấp thông tin chi tiết về phân bố tần số</li>
+    </ul>
+
+    <h4>2.6.7. Nhược điểm</h4>
+    <ul>
+        <li><strong>Chi phí tính toán rất cao:</strong> FFT có độ phức tạp O(N×M×log(N×M)), chậm hơn nhiều so với các phương pháp khác</li>
+        <li><strong>Bộ nhớ lớn:</strong> Cần lưu ma trận phức (gấp đôi kích thước ảnh gốc)</li>
+        <li><strong>Phức tạp triển khai:</strong> Nhiều bước xử lý, dễ lỗi</li>
+        <li><strong>Không phù hợp real-time:</strong> Quá chậm cho ứng dụng thời gian thực</li>
+    </ul>
+
+    <h4>2.6.8. Ứng dụng phù hợp</h4>
+    <ul>
+        <li>Phân tích chất lượng ảnh offline</li>
+        <li>Nghiên cứu và phát triển</li>
+        <li>So sánh với các phương pháp khác</li>
+        <li>Khi cần hiểu sâu về đặc tính tần số của ảnh</li>
+    </ul>
+
+    <h2>3. CÁC THUẬT TOÁN TÌM KIẾM TỐI ƯU (SEARCH STRATEGIES)</h2>
+
+    <p>
+        Sau khi có phương pháp đo lường độ nét, bước tiếp theo là tìm ảnh có độ nét cao nhất trong một chuỗi ảnh. Với N ảnh, việc xử lý tuần tự toàn bộ yêu cầu N lần tính toán focus measure, có thể rất tốn thời gian. Các chiến lược tìm kiếm thông minh có thể giảm đáng kể số lượng ảnh cần xử lý bằng cách khai thác đặc tính của hàm focus measure.
+    </p>
+
+    <h3>3.1. Đặc tính hàm Focus Measure</h3>
+    <p>
+        Hầu hết các hàm focus measure có tính chất <strong>unimodal</strong> (đơn cực trị) khi plot theo vị trí lấy nét:
+    </p>
+    <ul>
+        <li>Khi xa điểm nét, giá trị focus thấp (ảnh mờ)</li>
+        <li>Khi tiến gần điểm nét, giá trị focus tăng dần</li>
+        <li>Tại điểm nét tối ưu, giá trị focus đạt cực đại</li>
+        <li>Sau điểm nét, giá trị focus giảm dần</li>
+    </ul>
+    <p>
+        Tính chất này cho phép áp dụng các thuật toán tìm kiếm tối ưu thay vì duyệt tuần tự.
+    </p>
+
+    <h3>3.2. Sequential Search (Tìm kiếm tuần tự)</h3>
+    
+    <h4>3.2.1. Nguyên lý</h4>
+    <p>
+        Sequential Search là phương pháp cơ bản nhất: xử lý tất cả N ảnh và chọn ảnh có focus score cao nhất. Đây không thực sự là một "chiến lược" mà là phương pháp brute-force, đảm bảo tìm được kết quả chính xác nhất.
+    </p>
+
+    <h4>3.2.2. Thuật toán</h4>
+    <div class="algorithm-box">
+        <strong>Thuật toán Sequential Search:</strong>
+        <pre>
+Input: Danh sách N ảnh {I₁, I₂, ..., I_N}
+Output: Ảnh có focus score cao nhất
+
+1. Khởi tạo:
+   - maxScore = -∞
+   - bestImage = null
+   
+2. For mỗi ảnh I_i in danh sách:
+   a. score_i = CalculateFocusMeasure(I_i)
+   b. If score_i > maxScore:
+      - maxScore = score_i
+      - bestImage = I_i
+      
+3. Return bestImage
+        </pre>
+    </div>
+
+    <h4>3.2.3. Phân tích</h4>
+    <p>
+        <strong>Độ phức tạp thời gian:</strong> O(N×C) trong đó C là chi phí tính một focus measure
+    </p>
+    <p>
+        <strong>Độ phức tạp không gian:</strong> O(N) để lưu kết quả, hoặc O(1) nếu chỉ lưu max
+    </p>
+    <p>
+        <strong>Số ảnh xử lý:</strong> 100% - xử lý tất cả N ảnh
+    </p>
+
+    <h4>3.2.4. Ưu và nhược điểm</h4>
+    <ul>
+        <li><strong>Ưu điểm:</strong>
+            <ul>
+                <li>Chắc chắn tìm được ảnh tốt nhất</li>
+                <li>Không phụ thuộc vào tính đơn điệu của hàm focus</li>
+                <li>Đơn giản, dễ triển khai</li>
+                <li>Có thể song song hóa hoàn toàn</li>
+                <li>Cung cấp toàn bộ dữ liệu focus curve</li>
+            </ul>
+        </li>
+        <li><strong>Nhược điểm:</strong>
+            <ul>
+                <li>Chậm nhất trong tất cả các phương pháp</li>
+                <li>Lãng phí tính toán khi N lớn</li>
+                <li>Không tận dụng tính chất của hàm focus</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>3.2.5. Khi nào sử dụng</h4>
+    <ul>
+        <li>N nhỏ (dưới 20 ảnh)</li>
+        <li>Cần kết quả chính xác tuyệt đối</li>
+        <li>Cần phân tích toàn bộ focus curve</li>
+        <li>Hàm focus không đơn điệu (hiếm gặp)</li>
+        <li>Có tài nguyên tính toán song song mạnh</li>
+    </ul>
+
+    <h3>3.3. Binary Search Strategy (Tìm kiếm nhị phân)</h3>
+    
+    <h4>3.3.1. Nguyên lý</h4>
+    <p>
+        Binary Search thích nghi từ thuật toán tìm kiếm nhị phân cổ điển, nhưng thay vì tìm một giá trị cụ thể, ta tìm cực đại của hàm unimodal. Chiến lược này chia không gian tìm kiếm làm đôi ở mỗi bước, loại bỏ một nửa không chứa cực đại.
+    </p>
+
+    <h4>3.3.2. Thuật toán chi tiết</h4>
+    <div class="algorithm-box">
+        <strong>Thuật toán Binary Search cho AutoFocus:</strong>
+        <pre>
+Input: Danh sách N ảnh đã sắp xếp theo focus index
+Output: Ảnh có focus score cao nhất (ước lượng)
+
+1. Khởi tạo:
+   - left = 0
+   - right = N - 1
+   - imageList = []
+   
+2. While left ≤ right:
+   a. mid = left + (right - left) / 2
+   b. Thêm ảnh tại mid vào imageList
+   c. Nếu có thể, thêm các ảnh láng giềng (mid-1, mid+1)
+   
+   d. Tính focus scores cho các ảnh vừa thêm
+   e. So sánh scores để quyết định hướng tìm kiếm:
+      - Nếu score[mid-1] < score[mid] < score[mid+1]:
+        Cực đại ở bên phải → left = mid + 1
+      - Nếu score[mid-1] > score[mid] > score[mid+1]:
+        Cực đại ở bên trái → right = mid - 1
+      - Ngược lại: đã gần cực đại → tiếp tục thu hẹp
+        
+3. Xử lý các ảnh trong imageList
+4. Return ảnh có score cao nhất
+        </pre>
+    </div>
+
+    <h4>3.3.3. Triển khai trong project</h4>
+    <p>
+        Trong code, Binary Search được triển khai với một số điều chỉnh:
+    </p>
+    <ul>
+        <li>Không chỉ lấy điểm mid mà còn lấy các điểm láng giềng để có đủ thông tin</li>
+        <li>Sử dụng HashSet để tránh xử lý trùng lặp</li>
+        <li>Lấy khoảng 50% số ảnh để cân bằng giữa tốc độ và độ chính xác</li>
+        <li>Xen kẽ giữa việc thu hẹp từ trái và từ phải để tăng độ bao phủ</li>
+    </ul>
+
+    <h4>3.3.4. Phân tích hiệu suất</h4>
+    <p>
+        <strong>Độ phức tạp thời gian:</strong> O(log N × C) - lý tưởng
+    </p>
+    <p>
+        Tuy nhiên, do cần lấy thêm các điểm láng giềng và không loại bỏ hoàn toàn một nửa, độ phức tạp thực tế là O(N/2 × C)
+    </p>
+    <p>
+        <strong>Số ảnh xử lý:</strong> Khoảng 50% so với Sequential
+    </p>
+
+    <h4>3.3.5. Ưu và nhược điểm</h4>
+    <ul>
+        <li><strong>Ưu điểm:</strong>
+            <ul>
+                <li>Nhanh hơn Sequential đáng kể</li>
+                <li>Hiệu quả với hàm focus đơn điệu</li>
+                <li>Dễ hiểu và triển khai</li>
+                <li>Có thể song song hóa một phần</li>
+            </ul>
+        </li>
+        <li><strong>Nhược điểm:</strong>
+            <ul>
+                <li>Yêu cầu hàm focus phải đơn điệu (unimodal)</li>
+                <li>Có thể bỏ lỡ cực đại nếu hàm có nhiều đỉnh</li>
+                <li>Độ chính xác phụ thuộc vào tính đơn điệu</li>
+                <li>Không cung cấp toàn bộ focus curve</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>3.3.6. Khi nào sử dụng</h4>
+    <ul>
+        <li>N trung bình đến lớn (20-100 ảnh)</li>
+        <li>Hàm focus đơn điệu và ổn định</li>
+        <li>Cần cân bằng giữa tốc độ và độ chính xác</li>
+        <li>Môi trường kiểm soát tốt (ít nhiễu)</li>
+    </ul>
+
+    <h3>3.4. Hill Climbing Strategy (Leo đồi)</h3>
+    
+    <h4>3.4.1. Nguyên lý</h4>
+    <p>
+        Hill Climbing là một thuật toán tìm kiếm cục bộ lấy cảm hứng từ việc leo lên đỉnh đồi trong điều kiện sương mù. Từ một điểm xuất phát, ta di chuyển theo hướng tăng dần cho đến khi không thể tăng thêm nữa. Trong AutoFocus, ta bắt đầu từ nhiều điểm khác nhau và "leo" theo gradient của hàm focus.
+    </p>
+
+    <h4>3.4.2. Thuật toán chi tiết</h4>
+    <div class="algorithm-box">
+        <strong>Thuật toán Hill Climbing:</strong>
+        <pre>
+Input: Danh sách N ảnh
+Output: Ảnh có focus score cao nhất (ước lượng cục bộ)
+
+1. Chọn điểm xuất phát:
+   - numStarts = max(3, min(5, N/10))
+   - step = N / (numStarts + 1)
+   - startPoints = [step, 2×step, ..., numStarts×step]
+   
+2. For mỗi startIdx in startPoints:
+   a. currentIdx = startIdx
+   b. currentScore = CalculateFocus(image[currentIdx])
+   c. Thêm image[currentIdx] vào kết quả
+   
+   d. Khám phá láng giềng:
+      For neighbor in [currentIdx-1, currentIdx+1]:
+         - score = CalculateFocus(image[neighbor])
+         - Thêm image[neighbor] vào kết quả
+         
+   e. Mở rộng khám phá:
+      For extended in [currentIdx-2, currentIdx+2]:
+         - Thêm image[extended] vào kết quả
+         
+3. Loại bỏ trùng lặp trong kết quả
+4. Return ảnh có score cao nhất trong danh sách kết quả
+        </pre>
+    </div>
+
+    <h4>3.4.3. Multi-start Hill Climbing</h4>
+    <p>
+        Để tránh bị mắc kẹt ở cực đại cục bộ (local maximum), thuật toán sử dụng nhiều điểm xuất phát:
+    </p>
+    <ul>
+        <li><strong>3-5 điểm xuất phát:</strong> Phân bố đều trong không gian tìm kiếm</li>
+        <li><strong>Mỗi điểm:</strong> Leo độc lập và ghi nhận cực đại cục bộ</li>
+        <li><strong>So sánh:</strong> Chọn cực đại toàn cục từ các cực đại cục bộ</li>
+    </ul>
+
+    <h4>3.4.4. Khám phá láng giềng</h4>
+    <p>
+        Từ mỗi điểm xuất phát, thuật toán khám phá các láng giềng ở nhiều mức:
+    </p>
+    <ul>
+        <li><strong>Láng giềng gần (±1):</strong> Kiểm tra gradient trực tiếp</li>
+        <li><strong>Láng giềng xa (±2):</strong> Đảm bảo không bỏ sót cực đại gần đó</li>
+    </ul>
+    <p>
+        Điều này tạo ra một "vùng khám phá" rộng hơn xung quanh mỗi điểm xuất phát, tăng khả năng tìm thấy cực đại toàn cục.
+    </p>
+
+    <h4>3.4.5. Phân tích hiệu suất</h4>
+    <p>
+        <strong>Độ phức tạp thời gian:</strong> O(k × m × C) trong đó:
+    </p>
+    <ul>
+        <li>k = số điểm xuất phát (3-5)</li>
+        <li>m = số láng giềng khám phá (≈5 láng giềng/điểm)</li>
+        <li>C = chi phí tính focus measure</li>
+    </ul>
+    <p>
+        <strong>Số ảnh xử lý:</strong> Khoảng 15-25 ảnh (15-25% cho N=100)
+    </p>
+
+    <h4>3.4.6. Ưu và nhược điểm</h4>
+    <ul>
+        <li><strong>Ưu điểm:</strong>
+            <ul>
+                <li>Rất nhanh - chỉ xử lý một phần nhỏ ảnh</li>
+                <li>Hiệu quả với hàm focus đơn điệu</li>
+                <li>Multi-start giảm nguy cơ cực đại cục bộ</li>
+                <li>Thích nghi tốt với các kích thước N khác nhau</li>
+            </ul>
+        </li>
+        <li><strong>Nhược điểm:</strong>
+            <ul>
+                <li>Không đảm bảo tìm cực đại toàn cục</li>
+                <li>Phụ thuộc mạnh vào vị trí điểm xuất phát</li>
+                <li>Có thể bỏ sót nếu có nhiều cực đại cục bộ</li>
+                <li>Khó song song hóa hoàn toàn</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>3.4.7. Cải tiến</h4>
+    <p>
+        <strong>Adaptive step size:</strong> Thay vì bước cố định, điều chỉnh theo gradient:
+    </p>
+    <ul>
+        <li>Gradient lớn → bước lớn (leo nhanh)</li>
+        <li>Gradient nhỏ → bước nhỏ (tinh chỉnh)</li>
+    </ul>
+    <p>
+        <strong>Simulated Annealing:</strong> Cho phép "đi xuống" với xác suất nhất định để thoát khỏi cực đại cục bộ.
+    </p>
+
+    <h4>3.4.8. Khi nào sử dụng</h4>
+    <ul>
+        <li>N lớn (>50 ảnh) và cần tốc độ</li>
+        <li>Hàm focus đơn điệu rõ ràng</li>
+        <li>Môi trường ổn định, ít nhiễu</li>
+        <li>Ưu tiên tốc độ hơn độ chính xác tuyệt đối</li>
+    </ul>
+
+    <h3>3.5. Ternary Search Strategy (Tìm kiếm tam phân)</h3>
+    
+    <h4>3.4.1. Nguyên lý</h4>
+    <p>
+        Ternary Search là một thuật toán tìm kiếm tối ưu cho hàm unimodal, chia không gian thành ba phần thay vì hai như Binary Search. Ý tưởng là tại mỗi bước, ta đánh giá hai điểm ở 1/3 và 2/3 của khoảng tìm kiếm, từ đó loại bỏ được 1/3 không chứa cực đại.
+    </p>
+
+    <h4>3.5.2. Thuật toán chi tiết</h4>
+    <div class="algorithm-box">
+        <strong>Thuật toán Ternary Search:</strong>
+        <pre>
+Input: Danh sách N ảnh
+Output: Ảnh có focus score cao nhất
+
+1. Khởi tạo:
+   - left = 0
+   - right = N - 1
+   - resultList = []
+   
+2. While (right - left > 2) AND (resultList.size < 0.6×N):
+   a. Tính hai điểm chia:
+      - mid1 = left + (right - left) / 3
+      - mid2 = right - (right - left) / 3
+      
+   b. Thêm ảnh tại mid1 và mid2 vào resultList
+   
+   c. Tính focus scores:
+      - score1 = CalculateFocus(image[mid1])
+      - score2 = CalculateFocus(image[mid2])
+      
+   d. So sánh và thu hẹp:
+      If score1 < score2:
+         - Cực đại ở phải mid1 → left = mid1
+      Else:
+         - Cực đại ở trái mid2 → right = mid2
+         
+   e. Thêm điểm trung tâm:
+      - center = (mid1 + mid2) / 2
+      - Thêm image[center] vào resultList
+      
+3. Thêm các ảnh còn lại trong [left, right]
+4. Tính focus cho tất cả ảnh trong resultList
+5. Return ảnh có score cao nhất
+        </pre>
+    </div>
+
+    <h4>3.5.3. So sánh với Binary Search</h4>
+    <table class="comparison-table">
+        <tr>
+            <th>Đặc điểm</th>
+            <th>Binary Search</th>
+            <th>Ternary Search</th>
+        </tr>
+        <tr>
+            <td>Số điểm đánh giá/lần</td>
+            <td>1 điểm (mid)</td>
+            <td>2 điểm (mid1, mid2)</td>
+        </tr>
+        <tr>
+            <td>Tỷ lệ thu hẹp</td>
+            <td>1/2</td>
+            <td>1/3</td>
+        </tr>
+        <tr>
+            <td>Số lần lặp (lý thuyết)</td>
+            <td>log₂(N)</td>
+            <td>log₃(N)</td>
+        </tr>
+        <tr>
+            <td>Tổng số tính toán</td>
+            <td>1 × log₂(N)</td>
+            <td>2 × log₃(N) ≈ 1.26 × log₂(N)</td>
+        </tr>
+        <tr>
+            <td>Độ chính xác</td>
+            <td>Tốt</td>
+            <td>Tốt hơn</td>
+        </tr>
+    </table>
+
+    <p>
+        Mặc dù Ternary Search cần nhiều tính toán hơn một chút, nhưng nó hội tụ nhanh hơn và cho kết quả chính xác hơn với hàm unimodal.
+    </p>
+
+    <h4>3.5.4. Điều kiện dừng</h4>
+    <p>
+        Thuật toán dừng khi:
+    </p>
+    <ul>
+        <li><strong>Khoảng nhỏ:</strong> right - left ≤ 2 (chỉ còn vài ảnh)</li>
+        <li><strong>Đủ mẫu:</strong> Đã xử lý 60% số ảnh (ngăn xử lý quá nhiều)</li>
+    </ul>
+    <p>
+        Điều kiện thứ hai đảm bảo thuật toán không thoái hóa thành Sequential khi có vấn đề.
+    </p>
+
+    <h4>3.5.5. Phân tích toán học</h4>
+    <p>
+        Với hàm f(x) unimodal, Ternary Search đảm bảo:
+    </p>
+    <div class="equation">
+        <p>|x* - x<sub>found</sub>| ≤ (b - a) / 3<sup>k</sup></p>
+    </div>
+    <p>
+        Trong đó:
+    </p>
+    <ul>
+        <li>x* là cực đại thực</li>
+        <li>x<sub>found</sub> là vị trí tìm được</li>
+        <li>a, b là biên ban đầu</li>
+        <li>k là số lần lặp</li>
+    </ul>
+    <p>
+        Điều này có nghĩa sai số giảm theo cấp số nhân, hội tụ rất nhanh.
+    </p>
+
+    <h4>3.5.6. Ưu và nhược điểm</h4>
+    <ul>
+        <li><strong>Ưu điểm:</strong>
+            <ul>
+                <li>Hội tụ nhanh hơn Binary Search</li>
+                <li>Độ chính xác cao với hàm unimodal</li>
+                <li>Đảm bảo toán học về độ chính xác</li>
+                <li>Thích hợp cho hàm focus lý tưởng</li>
+            </ul>
+        </li>
+        <li><strong>Nhược điểm:</strong>
+            <ul>
+                <li>Chi phí tính toán cao hơn Binary Search 26%</li>
+                <li>Yêu cầu hàm unimodal nghiêm ngặt</li>
+                <li>Phức tạp triển khai hơn</li>
+                <li>Nhạy cảm với nhiễu</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>3.5.7. Khi nào sử dụng</h4>
+    <ul>
+        <li>Hàm focus có tính unimodal rõ ràng</li>
+        <li>Cần độ chính xác cao</li>
+        <li>Môi trường kiểm soát tốt</li>
+        <li>Chi phí tính focus measure cao (đáng để tối ưu số lần tính)</li>
+    </ul>
+
+    <h3>3.6. Adaptive Search Strategy (Tìm kiếm thích nghi)</h3>
+    
+    <h4>3.6.1. Nguyên lý</h4>
+    <p>
+        Adaptive Search là một chiến lược lai kết hợp nhiều kỹ thuật, thích nghi với đặc điểm của tập ảnh. Thuật toán hoạt động theo ba pha: coarse sampling (lấy mẫu thô), intermediate sampling (lấy mẫu trung gian), và critical points analysis (phân tích điểm quan trọng). Mục tiêu là cân bằng giữa tốc độ và độ chính xác bằng cách tập trung tài nguyên vào các vùng quan trọng.
+    </p>
+
+    <h4>3.6.2. Thuật toán ba pha</h4>
+    <div class="algorithm-box">
+        <strong>Thuật toán Adaptive Search:</strong>
+        <pre>
+Input: Danh sách N ảnh
+Output: Ảnh có focus score cao nhất
+
+Phase 1: Coarse Sampling (Lấy mẫu thô)
+1. coarseStep = max(1, N / 10)
+2. For i from 0 to N with step coarseStep:
+   - Thêm image[i] vào resultList
+   - Mục đích: Khảo sát tổng quan không gian
+
+Phase 2: Intermediate Sampling (Lấy mẫu trung gian)
+3. intermediateStep = coarseStep / 2
+4. For i from intermediateStep to N with step coarseStep×2:
+   - Thêm image[i] vào resultList
+   - Mục đích: Điền vào các khoảng trống
+
+Phase 3: Critical Points (Điểm quan trọng)
+5. Thêm các điểm chiến lược:
+   - image[0] (điểm đầu)
+   - image[N/2] (điểm giữa)
+   - image[N-1] (điểm cuối)
+   - Mục đích: Đảm bảo không bỏ sót biên
+
+6. Loại bỏ trùng lặp
+7. Tính focus cho tất cả ảnh trong resultList
+8. Return ảnh có score cao nhất
+        </pre>
+    </div>
+
+    <h4>3.6.3. Chi tiết từng pha</h4>
+    <p>
+        <strong>Phase 1 - Coarse Sampling:</strong>
+    </p>
+    <ul>
+        <li>Lấy mẫu đều với bước coarseStep = N/10</li>
+        <li>Tạo ra khoảng 10 mẫu ban đầu</li>
+        <li>Mục đích: Hiểu "hình dạng" tổng thể của focus curve</li>
+        <li>Chi phí: 10% số ảnh</li>
+    </ul>
+
+    <p>
+        <strong>Phase 2 - Intermediate Sampling:</strong>
+    </p>
+    <ul>
+        <li>Lấy mẫu ở các điểm giữa khoảng coarse</li>
+        <li>Bước nhảy = coarseStep × 2</li>
+        <li>Bắt đầu từ coarseStep/2 để điền vào giữa</li>
+        <li>Mục đích: Tăng độ phân giải ở các vùng có thể quan trọng</li>
+        <li>Chi phí thêm: ~5% số ảnh</li>
+    </ul>
+
+    <p>
+        <strong>Phase 3 - Critical Points:</strong>
+    </p>
+    <ul>
+        <li>Bổ sung các điểm đầu, giữa, cuối</li>
+        <li>Mục đích: Đảm bảo biên được xét</li>
+        <li>Quan trọng vì cực đại có thể ở biên</li>
+        <li>Chi phí thêm: 3 ảnh</li>
+    </ul>
+
+    <h4>3.6.4. Tổng số ảnh xử lý</h4>
+    <p>
+        Với N = 100 ảnh:
+    </p>
+    <ul>
+        <li>Phase 1: 10 ảnh</li>
+        <li>Phase 2: 5 ảnh</li>
+        <li>Phase 3: 3 ảnh (có thể trùng)</li>
+        <li><strong>Tổng: ~15-18 ảnh (15-18%)</strong></li>
+    </ul>
+
+    <h4>3.6.5. Adaptive mechanism</h4>
+    <p>
+        Có thể mở rộng thành truly adaptive:
+    </p>
+    <div class="algorithm-box">
+        <strong>Adaptive Extension:</strong>
+        <pre>
+1. Sau Phase 1, phân tích kết quả:
+   - Tìm vùng có gradient lớn (thay đổi nhanh)
+   - Tìm vùng có score cao
+   
+2. Phase 2 refined:
+   - Lấy mẫu dày đặc hơn ở vùng gradient lớn
+   - Bỏ qua vùng score rõ ràng thấp
+   
+3. Stopping criteria:
+   - Nếu đã tìm thấy peak rõ ràng → dừng sớm
+   - Nếu còn mơ hồ → tiếp tục lấy mẫu
+        </pre>
+    </div>
+
+    <h4>3.6.6. Phân tích hiệu suất</h4>
+    <p>
+        <strong>Độ phức tạp thời gian:</strong> O(0.15×N × C) - xử lý khoảng 15% ảnh
+    </p>
+    <p>
+        <strong>Độ phức tạp không gian:</strong> O(0.15×N) để lưu danh sách kết quả
+    </p>
+    <p>
+        <strong>Tốc độ hội tụ:</strong> Nhanh - thường tìm được peak trong phase 1 hoặc 2
+    </p>
+
+    <h4>3.6.7. Ưu và nhược điểm</h4>
+    <ul>
+        <li><strong>Ưu điểm:</strong>
+            <ul>
+                <li>Rất nhanh - chỉ 15-18% số ảnh</li>
+                <li>Cân bằng tốt giữa tốc độ và độ chính xác</li>
+                <li>Thích nghi với nhiều kích thước N khác nhau</li>
+                <li>Không yêu cầu giả định mạnh về hàm focus</li>
+                <li>Ổn định với nhiễu nhờ lấy mẫu phân tán</li>
+            </ul>
+        </li>
+        <li><strong>Nhược điểm:</strong>
+            <ul>
+                <li>Có thể bỏ lỡ peak nhọn nằm giữa các mẫu</li>
+                <li>Không tối ưu cho hàm focus đặc biệt đơn điệu</li>
+                <li>Phức tạp triển khai với ba pha</li>
+                <li>Khó điều chỉnh tham số</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>3.6.8. Khi nào sử dụng</h4>
+    <ul>
+        <li>N lớn (>50 ảnh) và cần tốc độ cao</li>
+        <li>Không chắc chắn về tính chất hàm focus</li>
+        <li>Môi trường có nhiễu vừa phải</li>
+        <li>Ứng dụng thực tế với điều kiện đa dạng</li>
+        <li>Khi muốn "best of both worlds" - nhanh và tương đối chính xác</li>
+    </ul>
+
+    <h3>3.7. So sánh tổng quan các chiến lược</h3>
+    
+    <table class="comparison-table">
+        <tr>
+            <th>Chiến lược</th>
+            <th>Số ảnh xử lý</th>
+            <th>Độ chính xác</th>
+            <th>Tốc độ</th>
+            <th>Yêu cầu hàm</th>
+            <th>Độ phức tạp</th>
+        </tr>
+        <tr>
+            <td><strong>Sequential</strong></td>
+            <td>100%</td>
+            <td>Hoàn hảo</td>
+            <td>Chậm nhất</td>
+            <td>Không yêu cầu</td>
+            <td>Rất đơn giản</td>
+        </tr>
+        <tr>
+            <td><strong>Binary Search</strong></td>
+            <td>~50%</td>
+            <td>Tốt</td>
+            <td>Trung bình</td>
+            <td>Unimodal</td>
+            <td>Đơn giản</td>
+        </tr>
+        <tr>
+            <td><strong>Hill Climbing</strong></td>
+            <td>15-25%</td>
+            <td>Trung bình</td>
+            <td>Nhanh</td>
+            <td>Unimodal</td>
+            <td>Trung bình</td>
+        </tr>
+        <tr>
+            <td><strong>Ternary Search</strong></td>
+            <td>~40-60%</td>
+            <td>Rất tốt</td>
+            <td>Trung bình</td>
+            <td>Unimodal mạnh</td>
+            <td>Trung bình</td>
+        </tr>
+        <tr>
+            <td><strong>Adaptive</strong></td>
+            <td>15-18%</td>
+            <td>Tốt</td>
+            <td>Rất nhanh</td>
+            <td>Linh hoạt</td>
+            <td>Phức tạp</td>
+        </tr>
+    </table>
+
+    <h2>4. TỐI ƯU HÓA HIỆU SUẤT</h2>
+
+    <h3>4.1. Xử lý song song (Parallel Processing)</h3>
+    
+    <h4>4.1.1. Nguyên lý</h4>
+    <p>
+        Hầu hết các thuật toán focus measure đều có tính chất <strong>data parallel</strong> - việc tính focus score của các ảnh khác nhau hoàn toàn độc lập. Điều này cho phép xử lý song song hiệu quả trên các CPU đa lõi hiện đại.
+    </p>
+
+    <h4>4.1.2. Triển khai với Parallel.ForEach</h4>
+    <p>
+        Trong .NET, Parallel.ForEach cung cấp cơ chế song song hóa đơn giản:
+    </p>
+    <div class="algorithm-box">
+        <strong>Xử lý song song:</strong>
+        <pre>
+Parallel.ForEach(images, image =>
+{
+    var score = CalculateFocusScore(image.FilePath, measureType, roi);
+    
+    lock (lockObject)
+    {
+        results[image.FocusIndex] = score;
+        processed++;
+        progress?.Report(processed);
+    }
+});
+        </pre>
+    </div>
+
+    <h4>4.1.3. Vấn đề cần xử lý</h4>
+    <ul>
+        <li><strong>Thread safety:</strong> Cần lock khi cập nhật biến chia sẻ (results, processed)</li>
+        <li><strong>Load balancing:</strong> Parallel.ForEach tự động cân bằng tải giữa các thread</li>
+        <li><strong>Overhead:</strong> Với N nhỏ, overhead tạo thread có thể lớn hơn lợi ích</li>
+        <li><strong>Memory:</strong> Mỗi thread cần bộ nhớ riêng cho xử lý ảnh</li>
+    </ul>
+
+    <h4>4.1.4. Hiệu suất song song</h4>
+    <p>
+        Với CPU P lõi và N ảnh:
+    </p>
+    <div class="equation">
+        <p>Speedup lý tưởng = P</p>
+        <p>Speedup thực tế ≈ P / (1 + overhead_ratio)</p>
+    </div>
+    <p>
+        Thực nghiệm cho thấy với N ≥ 20 và P = 8 lõi, speedup thực tế đạt 6-7 lần.
+    </p>
+
+    <h3>4.2. Tối ưu hóa vùng quan tâm (ROI)</h3>
+    
+    <h4>4.2.1. Ý tưởng</h4>
+    <p>
+        Thay vì xử lý toàn bộ ảnh, chỉ xử lý một vùng quan tâm (ROI - Region of Interest) chứa phần quan trọng. Với ảnh M×N và ROI chiếm r% diện tích, chi phí giảm xuống còn r%.
+    </p>
+
+    <h4>4.2.2. Các chế độ ROI</h4>
+    <ul>
+        <li><strong>Full Image (100%):</strong> Xử lý toàn bộ - chính xác nhất nhưng chậm nhất</li>
+        <li><strong>Center 75%:</strong> Vùng trung tâm 75% diện tích - cân bằng tốt</li>
+        <li><strong>Center 50%:</strong> Nửa trung tâm - nhanh gấp đôi</li>
+        <li><strong>Center 25%:</strong> Một phần tư trung tâm - rất nhanh</li>
+        <li><strong>Custom:</strong> Người dùng tự định nghĩa</li>
+        <li><strong>Auto Suggest:</strong> Thuật toán tự động xác định</li>
+    </ul>
+
+    <h4>4.2.3. Thuật toán Auto Suggest ROI</h4>
+    <div class="algorithm-box">
+        <strong>Tự động gợi ý ROI:</strong>
+        <pre>
+Input: Một ảnh đại diện
+Output: ROI tối ưu
+
+1. Tính gradient map của ảnh
+2. Chia ảnh thành các block (ví dụ 10×10)
+3. For mỗi vị trí có thể của ROI:
+   - Tính tổng gradient trong vùng ROI
+   - Lưu vị trí có tổng lớn nhất
+4. Return ROI tại vị trí có gradient tập trung nhất
+        </pre>
+    </div>
+
+    <h4>4.2.4. Ưu và nhược điểm ROI</h4>
+    <ul>
+        <li><strong>Ưu điểm:</strong> Giảm chi phí tính toán tuyến tính với tỷ lệ ROI</li>
+        <li><strong>Nhược điểm:</strong> Có thể bỏ lỡ thông tin quan trọng ngoài ROI</li>
+    </ul>
+
+    <h3>4.3. Xử lý ảnh 16-bit hiệu quả</h3>
+    
+    <h4>4.3.1. Thách thức</h4>
+    <p>
+        Ảnh 16-bit (65536 mức xám) phổ biến trong ứng dụng khoa học và y tế. So với ảnh 8-bit, chúng:
+    </p>
+    <ul>
+        <li>Kích thước lớn gấp đôi</li>
+        <li>Dải động rộng hơn nhiều</li>
+        <li>Yêu cầu xử lý cẩn thận để tránh tràn số</li>
+    </ul>
+
+    <h4>4.3.2. Kỹ thuật xử lý</h4>
+    <p>
+        <strong>Chuyển đổi sang float:</strong> Luôn chuyển ảnh 16-bit sang float32 trước khi tính toán:
+    </p>
+    <div class="algorithm-box">
+        <pre>
+image.ConvertTo(floatImage, MatType.CV_32F);
+        </pre>
+    </div>
+    <p>
+        Điều này đảm bảo:
+    </p>
+    <ul>
+        <li>Không bị tràn số khi tính toán gradient</li>
+        <li>Độ chính xác cao</li>
+        <li>Tương thích với các hàm OpenCV</li>
+    </ul>
+
+    <h4>4.3.3. Unsafe code optimization</h4>
+    <p>
+        Với C#, có thể sử dụng unsafe code để truy cập trực tiếp vào bộ nhớ ảnh, tăng tốc đáng kể cho các thuật toán đơn giản như Brenner:
+    </p>
+    <div class="algorithm-box">
+        <pre>
+unsafe
+{
+    float* data = (float*)image.DataPointer;
+    int width = image.Width;
+    
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width - 2; x++)
+        {
+            float diff = data[y * width + x + 2] - data[y * width + x];
+            sum += diff * diff;
+        }
+    }
+}
+        </pre>
+    </div>
+
+    <h3>4.4. Caching và Memory Management</h3>
+    
+    <h4>4.4.1. Image caching</h4>
+    <p>
+        Khi cần xử lý lại các ảnh (ví dụ thử nhiều thuật toán), cache ảnh đã load vào memory:
+    </p>
+    <ul>
+        <li><strong>LRU Cache:</strong> Giữ N ảnh gần đây nhất (N=10-20)</li>
+        <li><strong>Lazy loading:</strong> Chỉ load khi cần</li>
+        <li><strong>Preload:</strong> Load trước ảnh tiếp theo trong background</li>
+    </ul>
+
+    <h4>4.4.2. Memory disposal</h4>
+    <p>
+        OpenCV Mat cần được dispose thủ công trong C#:
+    </p>
+    <div class="algorithm-box">
+        <pre>
+using (var mat = Cv2.ImRead(path))
+{
+    // Xử lý
+} // Tự động dispose
+        </pre>
+    </div>
+    <p>
+        Quên dispose có thể dẫn đến memory leak nghiêm trọng.
+    </p>
+
+    <h3>4.5. Tối ưu hóa thuật toán cụ thể</h3>
+    
+    <h4>4.5.1. Tenengrad optimization</h4>
+    <ul>
+        <li>Sử dụng Sobel với kernel nhỏ (3×3) thay vì lớn</li>
+        <li>Dùng AddWeighted thay vì tính căn bậc hai cho magnitude</li>
+        <li>Separable convolution nếu có thể</li>
+    </ul>
+
+    <h4>4.5.2. FFT optimization</h4>
+    <ul>
+        <li>Padding đến kích thước tối ưu (GetOptimalDFTSize)</li>
+        <li>Reuse FFT plan nếu xử lý nhiều ảnh cùng kích thước</li>
+        <li>Chỉ tính magnitude spectrum, bỏ qua phase</li>
+    </ul>
+
+    <h4>4.5.3. VOL optimization</h4>
+    <ul>
+        <li>Dùng hàm MeanStdDev tích hợp thay vì tính thủ công</li>
+        <li>Kernel 3×3 thay vì lớn hơn</li>
+    </ul>
+
+    <h2>5. SO SÁNH VÀ ĐÁNH GIÁ</h2>
+
+    <h3>5.1. Phương pháp đánh giá</h3>
+    
+    <h4>5.1.1. Metrics đánh giá</h4>
+    <p>
+        Để đánh giá hiệu quả của các thuật toán, sử dụng các chỉ số:
+    </p>
+    <ul>
+        <li><strong>Độ chính xác:</strong> Thuật toán có tìm đúng ảnh nét nhất không?</li>
+        <li><strong>Thời gian xử lý:</strong> Tổng thời gian để xử lý toàn bộ chuỗi ảnh</li>
+        <li><strong>Tính đơn điệu:</strong> Hàm focus có đơn điệu khi plot theo focus index không?</li>
+        <li><strong>Độ nhạy nhiễu:</strong> Kết quả thay đổi nhiều như thế nào với nhiễu?</li>
+        <li><strong>Độ phân biệt:</strong> Chênh lệch giữa peak và non-peak lớn như thế nào?</li>
+    </ul>
+
+    <h4>5.1.2. Benchmark setup</h4>
+    <p>
+        Hệ thống benchmark trong project thực hiện:
+    </p>
+    <ul>
+        <li>Chạy tất cả 6 thuật toán focus measure</li>
+        <li>Đo thời gian xử lý cho mỗi thuật toán</li>
+        <li>Ghi nhận best focus index của mỗi thuật toán</li>
+        <li>Tính toán consensus - thuật toán nào đồng thuận với nhau</li>
+        <li>Tính tỷ lệ agreement</li>
+    </ul>
+
+    <h3>5.2. Kết quả thực nghiệm điển hình</h3>
+    
+    <h4>5.2.1. Độ chính xác</h4>
+    <table class="comparison-table">
+        <tr>
+            <th>Thuật toán</th>
+            <th>Tỷ lệ tìm đúng peak</th>
+            <th>Sai số trung bình (index)</th>
+        </tr>
+        <tr>
+            <td>Tenengrad</td>
+            <td>95-98%</td>
+            <td>0.5-1</td>
+        </tr>
+        <tr>
+            <td>Variance of Laplacian</td>
+            <td>90-95%</td>
+            <td>1-2</td>
+        </tr>
+        <tr>
+            <td>Brenner Gradient</td>
+            <td>85-90%</td>
+            <td>1-3</td>
+        </tr>
+        <tr>
+            <td>Sum Modified Laplacian</td>
+            <td>92-96%</td>
+            <td>0.5-1.5</td>
+        </tr>
+        <tr>
+            <td>Tenenbaum</td>
+            <td>94-97%</td>
+            <td>0.5-1</td>
+        </tr>
+        <tr>
+            <td>FFT High Frequency</td>
+            <td>88-93%</td>
+            <td>1-2</td>
+        </tr>
+    </table>
+
+    <h4>5.2.2. Tốc độ xử lý</h4>
+    <p>
+        Với ảnh 2048×2048 pixels, 16-bit, trên CPU Intel i7 (8 cores):
+    </p>
+    <table class="comparison-table">
+        <tr>
+            <th>Thuật toán</th>
+            <th>Thời gian/ảnh (ms)</th>
+            <th>Speedup với parallel</th>
+        </tr>
+        <tr>
+            <td>Tenengrad</td>

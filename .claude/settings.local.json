@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(del \"D:\\DucTrung\\LK\\Project\\C#\\WinForm\\AutoFocus\\AutoFocus\\app.manifest\")",
+      "Bash(dotnet build:*)",
+      "Bash(dir /B)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

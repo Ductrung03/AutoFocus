@@ -172,7 +172,7 @@ namespace AutoFocus
             
             return result;
         }
-        
+       
         private List<ImageData> HillClimbingStrategy(List<ImageData> images)
         {
             var result = new List<ImageData>();
